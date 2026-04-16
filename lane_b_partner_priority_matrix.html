@@ -6,20 +6,20 @@
 <title>Lane B Partner Priority Matrix — Siemens Teamplay</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f4f0; min-height: 100vh; padding: 32px 24px; }
-  .wrap { max-width: 860px; margin: 0 auto; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f4f0; min-height: 100vh; }
+  .back-bar { padding:12px 24px;background:#ffffff;border-bottom:0.5px solid #e5e5e3; }
+  .back-bar a { font-size:12px;font-weight:500;color:#185fa5;text-decoration:none;display:inline-flex;align-items:center;gap:6px; }
+  .back-bar a:hover { color:#0c447c; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 32px 24px; }
   .page-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888780; margin-bottom: 6px; }
   .page-title { font-size: 20px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
   .page-sub { font-size: 13px; color: #5f5e5a; margin-bottom: 20px; }
-
   .gap-bar { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 24px; }
   .gap-item { background: #f1efe8; border-radius: 8px; padding: 14px 16px; }
   .gap-label { font-size: 11px; color: #5f5e5a; margin-bottom: 4px; }
   .gap-val { font-size: 20px; font-weight: 500; color: #1a1a18; }
   .gap-sub { font-size: 11px; color: #a32d2d; margin-top: 3px; }
-
   .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888780; margin: 0 0 10px; }
-
   .partner-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
   .partner-card { background: #fff; border: 0.5px solid #e5e5e3; border-radius: 12px; padding: 16px; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; }
   .partner-card:hover { border-color: #b5d4f4; box-shadow: 0 2px 10px rgba(24,95,165,0.08); }
@@ -32,31 +32,36 @@
   .tag-q2 { background: #e6f1fb; color: #185fa5; }
   .tag-watch { background: #faeeda; color: #854f0b; }
   .tag-avoid { background: #fcebeb; color: #a32d2d; }
-
   .pill-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
   .pill { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: #f1efe8; color: #5f5e5a; border: 0.5px solid #e5e5e3; }
   .pill.good { background: #e1f5ee; color: #085041; border-color: #9fe1cb; }
   .pill.warn { background: #faeeda; color: #633806; border-color: #fac775; }
   .pill.bad { background: #fcebeb; color: #791f1f; border-color: #f09595; }
-
   .card-rationale { font-size: 12px; color: #5f5e5a; line-height: 1.6; }
   .fleet-hook { font-size: 11px; font-weight: 500; color: #185fa5; margin-top: 8px; padding-top: 8px; border-top: 0.5px solid #e5e5e3; }
-
   .divider-label { font-size: 11px; color: #888780; text-align: center; margin: 8px 0; letter-spacing: 0.05em; }
   .avoid-card { background: #fff; border: 0.5px solid #f09595; border-radius: 12px; padding: 14px 16px; opacity: 0.85; }
   .avoid-top { display: flex; align-items: center; justify-content: space-between; }
   .avoid-name { font-size: 13px; font-weight: 500; color: #1a1a18; }
   .avoid-sub { font-size: 11px; color: #888780; margin-top: 2px; }
   .avoid-reason { font-size: 12px; color: #5f5e5a; margin-top: 8px; line-height: 1.5; }
-
   .prereq { background: #f1efe8; border-radius: 12px; padding: 16px 18px; margin-top: 20px; }
   .prereq-title { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 6px; }
   .prereq-body { font-size: 12px; color: #5f5e5a; line-height: 1.6; }
 </style>
 </head>
 <body>
-<div class="wrap">
 
+<div class="back-bar">
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13 8H3M3 8L8 3M3 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to overview
+  </a>
+</div>
+
+<div class="wrap">
   <p class="page-label">Siemens Teamplay — Strategic Analysis</p>
   <h1 class="page-title">Lane B Partner Priority Matrix</h1>
   <p class="page-sub">Prioritized for enterprise fleet customers · April 2026</p>
@@ -84,10 +89,7 @@
 
     <div class="partner-card priority">
       <div class="card-top">
-        <div>
-          <div class="card-name">Aidoc (aiOS)</div>
-          <div class="card-sub">Critical findings triage · CT + MR · enterprise scale</div>
-        </div>
+        <div><div class="card-name">Aidoc (aiOS)</div><div class="card-sub">Critical findings triage · CT + MR · enterprise scale</div></div>
         <span class="tag tag-now">Priority now</span>
       </div>
       <div class="pill-row">
@@ -103,10 +105,7 @@
 
     <div class="partner-card priority">
       <div class="card-top">
-        <div>
-          <div class="card-name">Nuance PowerScribe (Microsoft)</div>
-          <div class="card-sub">Radiology reporting + AI impression drafting · de facto standard</div>
-        </div>
+        <div><div class="card-name">Nuance PowerScribe (Microsoft)</div><div class="card-sub">Radiology reporting + AI impression drafting · de facto standard</div></div>
         <span class="tag tag-now">Priority now</span>
       </div>
       <div class="pill-row">
@@ -122,10 +121,7 @@
 
     <div class="partner-card">
       <div class="card-top">
-        <div>
-          <div class="card-name">Subtle Medical (SubtleMR / SubtlePET)</div>
-          <div class="card-sub">AI image enhancement · scan time reduction · MR + PET</div>
-        </div>
+        <div><div class="card-name">Subtle Medical (SubtleMR / SubtlePET)</div><div class="card-sub">AI image enhancement · scan time reduction · MR + PET</div></div>
         <span class="tag tag-q2">Add in Q2</span>
       </div>
       <div class="pill-row">
@@ -141,10 +137,7 @@
 
     <div class="partner-card">
       <div class="card-top">
-        <div>
-          <div class="card-name">Cerebriu</div>
-          <div class="card-sub">Brain MRI triage + protocol automation · MR-native</div>
-        </div>
+        <div><div class="card-name">Cerebriu</div><div class="card-sub">Brain MRI triage + protocol automation · MR-native</div></div>
         <span class="tag tag-q2">Add in Q2</span>
       </div>
       <div class="pill-row">
@@ -160,10 +153,7 @@
 
     <div class="partner-card">
       <div class="card-top">
-        <div>
-          <div class="card-name">Blackford Analysis</div>
-          <div class="card-sub">AI orchestration layer · 140+ apps · multi-vendor PACS</div>
-        </div>
+        <div><div class="card-name">Blackford Analysis</div><div class="card-sub">AI orchestration layer · 140+ apps · multi-vendor PACS</div></div>
         <span class="tag tag-watch">Strategic watch</span>
       </div>
       <div class="pill-row">
@@ -195,7 +185,7 @@
     <div class="prereq-title">The real prerequisite before any of this matters</div>
     <div class="prereq-body">The hospital already trusts Fleet. Fleet is where they live. The marketplace has no trust and no traffic. The path to adoption: Fleet dashboard surfaces relevant app recommendations per scanner modality → one-click trial → standardized deployment through Fleet's existing service path → ROI visible in Fleet's existing analytics. No standalone marketplace adoption campaign will work until Fleet is the entry point.</div>
   </div>
-
 </div>
+
 </body>
 </html>
