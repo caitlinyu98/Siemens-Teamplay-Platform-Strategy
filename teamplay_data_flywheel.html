@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teamplay — Data Flywheel</title>
+<style>
+  :root {
+    --teal: #009999;
+    --teal-dark: #007a7a;
+    --teal-light: #e0f5f5;
+    --navy: #003d4d;
+    --orange: #e87722;
+    --orange-light: #f5a623;
+    --bg: #f4f4f2;
+    --surface: #ffffff;
+    --border: #e0e0dc;
+    --text: #1a1a1a;
+    --muted: #666;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    height: 52px;
+  }
+  .back-link {
+    color: var(--teal);
+    text-decoration: none;
+    font-size: 12px;
+    padding: 6px 16px 6px 0;
+    border-right: 1px solid var(--border);
+    margin-right: 20px;
+  }
+  .back-link:hover { text-decoration: underline; }
+  .brand { font-size: 14px; font-weight: 600; color: var(--navy); margin-right: auto; }
+  .brand-sub { font-weight: 400; color: var(--muted); }
+
+  .page-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px 32px 72px;
+  }
+
+  /* ── HERO THESIS ── */
+  .hero-thesis {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 32px 40px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-thesis::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: rgba(0,153,153,0.12);
+  }
+  .hero-thesis::after {
+    content: '';
+    position: absolute;
+    right: 60px;
+    bottom: -80px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(0,153,153,0.07);
+  }
+  .hero-label {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    background: rgba(0,153,153,0.15);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .hero-thesis h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.35;
+    max-width: 700px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .hero-thesis p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    max-width: 620px;
+    line-height: 1.7;
+    position: relative;
+  }
+  .hero-thesis p strong { color: rgba(255,255,255,0.9); }
+
+  /* ── THREE PANEL HORIZONTAL ── */
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 320px 1fr;
+    gap: 20px;
+    margin-bottom: 36px;
+    align-items: start;
+  }
+
+  /* Left panel: What the data enables */
+  .data-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: #fafaf8;
+  }
+  .panel-header-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .panel-header-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .data-insight {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: background 0.15s;
+  }
+  .data-insight:last-child { border-bottom: none; }
+  .data-insight:hover { background: #fafff8; }
+
+  .insight-vis {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+    position: relative;
+  }
+
+  /* Mini chart bars */
+  .mini-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 30px;
+    padding: 0 4px;
+  }
+  .mini-bar {
+    width: 7px;
+    border-radius: 2px 2px 0 0;
+    background: var(--teal);
+    opacity: 0.7;
+  }
+  .mini-bar.highlight { opacity: 1; background: var(--orange); }
+
+  /* Trend line */
+  .trend-vis {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .insight-text {}
+  .insight-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .insight-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .insight-metric {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal);
+    background: var(--teal-light);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  /* ── CENTER: FLYWHEEL ── */
+  .flywheel-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .flywheel-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .flywheel-diagram {
+    width: 300px;
+    position: relative;
+  }
+
+  /* SVG flywheel container */
+  .flywheel-svg-wrap {
+    width: 300px;
+    height: 300px;
+    position: relative;
+  }
+
+  .flywheel-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .flywheel-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    position: relative;
+  }
+  .flywheel-step:first-child { border-radius: 10px 10px 0 0; }
+  .flywheel-step:last-child { border-radius: 0 0 10px 10px; border-bottom: 1px solid var(--border); }
+  .flywheel-step:not(:last-child) { border-bottom: none; }
+  .flywheel-step:hover { background: #f8fffe; }
+
+  .step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.4;
+    flex: 1;
+  }
+  .step-text strong { color: var(--navy); }
+  .step-arrow {
+    font-size: 14px;
+    color: var(--teal);
+    flex-shrink: 0;
+  }
+
+  /* ── RIGHT PANEL: Strategic outcomes ── */
+  .outcome-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .outcome-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: background 0.15s;
+  }
+  .outcome-item:last-child { border-bottom: none; }
+  .outcome-item:hover { background: #fff8f4; }
+
+  .outcome-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .outcome-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .outcome-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .outcome-tag {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 10.5px;
+    font-weight: 600;
+    background: rgba(232,119,34,0.1);
+    color: var(--orange);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  /* ── GE PREDIX WARNING ── */
+  .predix-bar {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 12px;
+    padding: 24px 32px;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .predix-bar::before {
+    content: '⚠';
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 80px;
+    opacity: 0.04;
+    color: white;
+  }
+  .predix-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: rgba(232,119,34,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .predix-text {}
+  .predix-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 5px;
+  }
+  .predix-headline {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .predix-headline em { color: var(--orange); font-style: normal; }
+  .predix-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    max-width: 680px;
+  }
+  .predix-desc strong { color: var(--orange-light); }
+
+  /* ── NETWORK EFFECT VISUAL ── */
+  .network-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .network-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    background: #f8fffe;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .network-header h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .network-header p {
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  .network-body {
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .network-node-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+  }
+  .network-node {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border: 3px solid transparent;
+    transition: transform 0.2s;
+  }
+  .network-node:hover { transform: scale(1.05); }
+  .node-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .node-desc {
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .network-arrows {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 20px;
+  }
+  .net-arrow {
+    font-size: 20px;
+    color: var(--teal);
+    opacity: 0.6;
+  }
+  .net-arrow-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.3;
+    max-width: 80px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="index.html" class="back-link">← Back to overview</a>
+  <div class="brand">Siemens Healthineers <span class="brand-sub">— Platform Strategy Research</span></div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO THESIS -->
+  <div class="hero-thesis">
+    <div class="hero-label">Same-side network effects · Data coordination</div>
+    <h1>Coordinating data from every Teamplay scanner creates compounding value — with Siemens as the hub</h1>
+    <p>Marshall Van Alstyne's theory: B2B network effects are <strong>data-driven, not user-count driven.</strong> Siemens can take lessons from the airline and farming industries' coordinated data approach to improve predictive maintenance and reduce machine downtime. The installed base is already there. The flywheel is ready to spin.</p>
+  </div>
+
+  <!-- THREE-PANEL LAYOUT -->
+  <div class="three-col">
+
+    <!-- LEFT: What the data enables -->
+    <div class="data-panel">
+      <div class="panel-header">
+        <div class="panel-header-label">Fleet data outputs</div>
+        <div class="panel-header-title">What Siemens can compute that no hospital can alone</div>
+      </div>
+
+      <div class="data-insight">
+        <div class="insight-vis" style="background:#f0f9f9;">
+          <div class="mini-bars">
+            <div class="mini-bar" style="height:40%;"></div>
+            <div class="mini-bar" style="height:60%;"></div>
+            <div class="mini-bar highlight" style="height:85%;"></div>
+            <div class="mini-bar" style="height:55%;"></div>
+            <div class="mini-bar" style="height:70%;"></div>
+          </div>
+        </div>
+        <div class="insight-text">
+          <div class="insight-title">Cross-hospital benchmarks</div>
+          <div class="insight-desc">Aggregate scan time, image quality scores, and maintenance reports across the installed base. Each hospital sees how they perform vs. anonymized peers.</div>
+          <span class="insight-metric">UNC Health: top 18% for CT throughput</span>
+        </div>
+      </div>
+
+      <div class="data-insight">
+        <div class="insight-vis" style="background:#fff8f0;">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="18" stroke="#e87722" stroke-width="2" stroke-dasharray="4 2" opacity="0.4"/>
+            <circle cx="26" cy="26" r="10" fill="rgba(232,119,34,0.15)" stroke="#e87722" stroke-width="1.5"/>
+            <text x="26" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#e87722">!</text>
+          </svg>
+        </div>
+        <div class="insight-text">
+          <div class="insight-title">Predictive maintenance signals</div>
+          <div class="insight-desc">Fleet utilization + error log patterns across all scanners predict failure before it occurs. Downtime reduction is measurable and coordinated by Siemens through Teamplay Fleet.</div>
+          <span class="insight-metric">↓ 34% unplanned downtime</span>
+        </div>
+      </div>
+
+      <div class="data-insight">
+        <div class="insight-vis" style="background:#f5f0ff;">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <rect x="8" y="28" width="8" height="16" rx="2" fill="#8b5cf6" opacity="0.5"/>
+            <rect x="20" y="20" width="8" height="24" rx="2" fill="#8b5cf6" opacity="0.6"/>
+            <rect x="32" y="12" width="8" height="32" rx="2" fill="#8b5cf6" opacity="0.8"/>
+            <polyline points="12,26 24,18 36,10" stroke="#8b5cf6" stroke-width="1.5" fill="none" stroke-dasharray="3 2"/>
+          </svg>
+        </div>
+        <div class="insight-text">
+          <div class="insight-title">Protocol optimization data</div>
+          <div class="insight-desc">Which scan protocols produce the best outcomes by modality and patient type? Pooled data surfaces this. No single hospital can compute it alone.</div>
+          <span class="insight-metric">Fleet of 38,000+ scanners required</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CENTER: THE FLYWHEEL -->
+    <div class="flywheel-center">
+      <div class="flywheel-title">The data flywheel</div>
+
+      <!-- SVG Flywheel visualization -->
+      <div class="flywheel-svg-wrap">
+        <svg viewBox="0 0 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer ring -->
+          <circle cx="150" cy="150" r="130" fill="none" stroke="#e0e0dc" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+          <!-- Flywheel arc segments -->
+          <!-- Segment colors: teal shades cycling -->
+          <!-- Segment 1: top-right -->
+          <path d="M 150 150 L 240 60 A 110 110 0 0 1 280 150 Z"
+                fill="rgba(0,153,153,0.12)" stroke="rgba(0,153,153,0.3)" stroke-width="1"/>
+          <!-- Segment 2: right -->
+          <path d="M 150 150 L 280 150 A 110 110 0 0 1 200 260 Z"
+                fill="rgba(0,153,153,0.18)" stroke="rgba(0,153,153,0.3)" stroke-width="1"/>
+          <!-- Segment 3: bottom-left -->
+          <path d="M 150 150 L 200 260 A 110 110 0 0 1 60 240 Z"
+                fill="rgba(0,153,153,0.12)" stroke="rgba(0,153,153,0.3)" stroke-width="1"/>
+          <!-- Segment 4: left -->
+          <path d="M 150 150 L 60 240 A 110 110 0 0 1 20 150 Z"
+                fill="rgba(0,153,153,0.08)" stroke="rgba(0,153,153,0.25)" stroke-width="1"/>
+          <!-- Segment 5: top-left -->
+          <path d="M 150 150 L 20 150 A 110 110 0 0 1 90 55 Z"
+                fill="rgba(0,153,153,0.06)" stroke="rgba(0,153,153,0.2)" stroke-width="1"/>
+          <!-- Segment 6: top -->
+          <path d="M 150 150 L 90 55 A 110 110 0 0 1 240 60 Z"
+                fill="rgba(0,153,153,0.09)" stroke="rgba(0,153,153,0.25)" stroke-width="1"/>
+
+          <!-- Center hub -->
+          <circle cx="150" cy="150" r="44" fill="var(--navy)"/>
+          <circle cx="150" cy="150" r="38" fill="none" stroke="rgba(0,153,153,0.4)" stroke-width="1.5"/>
+          <text x="150" y="144" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="Helvetica Neue, Arial">Siemens</text>
+          <text x="150" y="158" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.6)" font-family="Helvetica Neue, Arial">Fleet hub</text>
+
+          <!-- Rotation arrow -->
+          <path d="M 150 50 A 100 100 0 0 1 250 150" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrowTeal)"/>
+
+          <defs>
+            <marker id="arrowTeal" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M 0 0 L 6 3 L 0 6 Z" fill="var(--teal)"/>
+            </marker>
+          </defs>
+
+          <!-- Labels on segments -->
+          <text x="230" y="118" text-anchor="middle" font-size="9" font-weight="600" fill="var(--teal-dark)" font-family="Helvetica Neue, Arial">Open Fleet</text>
+          <text x="230" y="128" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="Helvetica Neue, Arial">to all machines</text>
+
+          <text x="242" y="208" text-anchor="middle" font-size="9" font-weight="600" fill="var(--teal-dark)" font-family="Helvetica Neue, Arial">Richer data pool</text>
+
+          <text x="118" y="258" text-anchor="middle" font-size="9" font-weight="600" fill="var(--teal-dark)" font-family="Helvetica Neue, Arial">Better ML models</text>
+
+          <text x="42" y="208" text-anchor="middle" font-size="9" font-weight="600" fill="var(--teal-dark)" font-family="Helvetica Neue, Arial">Higher marginal</text>
+          <text x="42" y="218" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="Helvetica Neue, Arial">value per provider</text>
+
+          <text x="58" y="118" text-anchor="middle" font-size="9" font-weight="600" fill="var(--teal-dark)" font-family="Helvetica Neue, Arial">More hospitals</text>
+          <text x="58" y="128" text-anchor="middle" font-size="8.5" fill="var(--muted)" font-family="Helvetica Neue, Arial">join Fleet</text>
+
+          <text x="150" y="52" text-anchor="middle" font-size="9" font-weight="600" fill="var(--teal-dark)" font-family="Helvetica Neue, Arial">Anonymized pool grows</text>
+        </svg>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Strategic outcomes -->
+    <div class="outcome-card">
+      <div class="panel-header">
+        <div class="panel-header-label">Strategic outcomes</div>
+        <div class="panel-header-title">What the flywheel unlocks</div>
+      </div>
+
+      <div class="outcome-item">
+        <div class="outcome-icon" style="background:rgba(0,153,153,0.1);">🧲</div>
+        <div>
+          <div class="outcome-title">Developer magnet</div>
+          <div class="outcome-desc">Anonymized data access is the incentive that attracts developers to build on the marketplace — not revenue share alone.</div>
+          <span class="outcome-tag">Cross-side network effect</span>
+        </div>
+      </div>
+
+      <div class="outcome-item">
+        <div class="outcome-icon" style="background:rgba(91,141,184,0.1);">🔗</div>
+        <div>
+          <div class="outcome-title">Epic / FHIR interop</div>
+          <div class="outcome-desc">Coordination data formatted to FHIR standards flows into Epic. Siemens becomes part of the hospital's primary workflow, not a sidecar.</div>
+          <span class="outcome-tag">Workflow lock-in</span>
+        </div>
+      </div>
+
+      <div class="outcome-item">
+        <div class="outcome-icon" style="background:rgba(232,119,34,0.1);">📊</div>
+        <div>
+          <div class="outcome-title">Visible ROI dashboard</div>
+          <div class="outcome-desc">Every data output maps to a measurable KPI hospitals can show procurement. Makes the value of staying on Teamplay quantifiable.</div>
+          <span class="outcome-tag">Retention driver</span>
+        </div>
+      </div>
+
+      <div class="outcome-item">
+        <div class="outcome-icon" style="background:rgba(139,92,246,0.1);">⚡</div>
+        <div>
+          <div class="outcome-title">Marginal value compounds</div>
+          <div class="outcome-desc">The 38,000-scanner installed base means each new provider gets better ML immediately. No startup can replicate this starting point.</div>
+          <span class="outcome-tag">Durable moat</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- GE PREDIX CONTRAST -->
+  <div class="predix-bar">
+    <div class="predix-icon">⚡</div>
+    <div class="predix-text">
+      <div class="predix-label">Counterpoint — why Siemens will succeed where GE failed</div>
+      <div class="predix-headline">GE Predix had the same data thesis and failed — <em>not because the thesis was wrong</em></div>
+      <div class="predix-desc">GE never got enough machines connected to generate useful data before they ran out of patience and capital. The vision was right; the installed base wasn't there. <strong>Siemens already has 38,000+ scanners generating data today. The flywheel is ready to spin — the only question is whether Siemens builds the platform to capture it.</strong></div>
+    </div>
+  </div>
+
+  <!-- NETWORK EFFECTS VISUAL -->
+  <div class="network-section">
+    <div class="network-header">
+      <div>
+        <h3>Same-side network effects: how data coordination creates compounding value</h3>
+        <p>Van Alstyne's B2B framework applied — each new hospital makes the network more valuable for every existing hospital</p>
+      </div>
+    </div>
+    <div class="network-body">
+
+      <div class="network-node-group">
+        <div class="network-node" style="background:rgba(0,61,77,0.08); border-color:rgba(0,61,77,0.2);">🏥</div>
+        <div class="node-title">Hospital joins Fleet</div>
+        <div class="node-desc">Connects scanners. Begins contributing utilization, maintenance, and dose data to the anonymized pool.</div>
+      </div>
+
+      <div class="network-arrows">
+        <div class="net-arrow">⟷</div>
+        <div class="net-arrow-label">Data flows through Siemens hub both directions</div>
+        <div class="net-arrow">⟷</div>
+      </div>
+
+      <div class="network-node-group">
+        <div class="network-node" style="background:rgba(0,153,153,0.1); border-color:rgba(0,153,153,0.3);">📡</div>
+        <div class="node-title">Pool gets richer</div>
+        <div class="node-desc">Every additional hospital improves benchmarks, maintenance signals, and protocol recommendations for all existing members.</div>
+      </div>
+
+    </div>
+    <div style="padding: 0 32px 24px; display:flex; gap:12px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:200px; background:#f8fffe; border:1px solid rgba(0,153,153,0.2); border-radius:8px; padding:14px 16px;">
+        <div style="font-size:11px; font-weight:700; color:var(--teal-dark); margin-bottom:4px;">✈ Airline industry analogy</div>
+        <div style="font-size:11px; color:var(--muted); line-height:1.5;">Each airline shares engine performance data through GE Aviation's coordinated fleet. Every airline benefits from predictive maintenance insights from every other airline's engine hours.</div>
+      </div>
+      <div style="flex:1; min-width:200px; background:#f8fffe; border:1px solid rgba(0,153,153,0.2); border-radius:8px; padding:14px 16px;">
+        <div style="font-size:11px; font-weight:700; color:var(--teal-dark); margin-bottom:4px;">🌾 Farming industry analogy</div>
+        <div style="font-size:11px; color:var(--muted); line-height:1.5;">John Deere's Operations Center aggregates sensor data from across its tractor fleet. Each farmer benefits from soil, yield, and weather patterns computed across thousands of farms they never see.</div>
+      </div>
+      <div style="flex:1; min-width:200px; background:rgba(232,119,34,0.05); border:1px solid rgba(232,119,34,0.2); border-radius:8px; padding:14px 16px;">
+        <div style="font-size:11px; font-weight:700; color:var(--orange); margin-bottom:4px;">🏥 Siemens opportunity</div>
+        <div style="font-size:11px; color:var(--muted); line-height:1.5;">38,000+ installed scanners already generating data. Cross-hospital benchmarks on scan time, image quality, and downtime — impossible for any single hospital to compute alone. The substrate is built.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

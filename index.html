@@ -5,343 +5,410 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Siemens Healthineers — Teamplay Platform Strategy</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #f5f4f0;
-    color: #1a1a18;
-    min-height: 100vh;
+  :root {
+    --teal: #009999;
+    --teal-dark: #007a7a;
+    --navy: #003d4d;
+    --orange: #e87722;
+    --bg: #f4f4f2;
+    --surface: #ffffff;
+    --border: #e0e0dc;
+    --text: #1a1a1a;
+    --muted: #666;
   }
 
-  .nav {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    padding: 0 48px;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 0 24px;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .header-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    max-width: 700px;
+  }
+  .header-title em {
+    color: var(--teal);
+    font-style: italic;
+  }
+  .header-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    max-width: 620px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .header-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .header-meta-pill {
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.5);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 14px 40px;
-    background: #ffffff;
-    border-bottom: 0.5px solid #e5e5e3;
+    gap: 6px;
   }
-  .nav-logo { font-size: 13px; font-weight: 500; color: #1a1a18; }
-  .nav-logo span { color: #888780; font-weight: 400; }
-  .nav-meta { font-size: 12px; color: #888780; }
+  .header-meta-pill span { color: rgba(255,255,255,0.85); font-weight: 500; }
 
-  .hero {
-    background: #ffffff;
-    border-bottom: 0.5px solid #e5e5e3;
-    padding: 48px 40px 44px;
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--teal-dark);
+    padding: 0 48px;
   }
-  .hero-eyebrow {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+  .stats-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+  }
+  .stat {
+    padding: 14px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+  }
+  .stat:first-child { padding-left: 0; }
+  .stat-num {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.6);
     text-transform: uppercase;
-    color: #0f6e56;
-    margin-bottom: 14px;
-  }
-  .hero-title {
-    font-size: 34px;
-    font-weight: 500;
-    line-height: 1.2;
-    color: #1a1a18;
-    margin-bottom: 14px;
-    letter-spacing: -0.01em;
-    max-width: 680px;
-  }
-  .hero-title em { font-style: normal; color: #185fa5; }
-  .hero-sub {
-    font-size: 14px;
-    color: #5f5e5a;
-    line-height: 1.7;
-    max-width: 580px;
-    margin-bottom: 24px;
-  }
-  .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-  .tag {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    border: 0.5px solid #d3d1c7;
-    color: #888780;
-    background: #f5f4f0;
-  }
-
-  .main { padding: 32px 40px; }
-
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #888780;
-    margin-bottom: 14px;
-  }
-
-  .metrics {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0,1fr));
-    gap: 10px;
-    margin-bottom: 24px;
-  }
-  .metric-card {
-    background: #f1efe8;
-    border-radius: 8px;
-    padding: 16px;
-  }
-  .metric-label { font-size: 11px; color: #5f5e5a; margin-bottom: 6px; }
-  .metric-value { font-size: 22px; font-weight: 500; color: #1a1a18; line-height: 1; }
-  .metric-sub { font-size: 11px; color: #888780; margin-top: 4px; }
-  .up { color: #3b6d11; }
-  .down { color: #a32d2d; }
-
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0,1fr));
-    gap: 14px;
-    margin-bottom: 14px;
-  }
-  .card {
-    background: #ffffff;
-    border: 0.5px solid #e5e5e3;
-    border-radius: 12px;
-    padding: 22px;
-    text-decoration: none;
-    display: block;
-    transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
-  }
-  .card:hover {
-    border-color: #b5d4f4;
-    box-shadow: 0 2px 12px rgba(24,95,165,0.08);
-    transform: translateY(-1px);
-  }
-  .card.interactive { border-top: 2px solid #0f6e56; }
-  .card.interactive:hover {
-    border-color: #0f6e56;
-    box-shadow: 0 2px 12px rgba(15,110,86,0.1);
-  }
-
-  .card-badge {
-    font-size: 10px;
-    font-weight: 500;
     letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 20px;
-    display: inline-block;
-    margin-bottom: 12px;
   }
-  .badge-interactive { background: #e1f5ee; color: #085041; }
-  .badge-static { background: #e6f1fb; color: #0c447c; }
 
-  .card-title { font-size: 15px; font-weight: 500; color: #1a1a18; margin-bottom: 8px; }
-  .card-desc { font-size: 12px; color: #5f5e5a; line-height: 1.6; margin-bottom: 16px; }
+  /* ── MAIN ── */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 48px 72px;
+  }
+
+  /* Section heading */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    margin-top: 40px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title:first-of-type { margin-top: 0; }
+
+  /* ── CARD GRID ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .proto-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.15s;
+  }
+  .proto-card:hover {
+    border-color: var(--teal);
+    box-shadow: 0 4px 16px rgba(0,153,153,0.1);
+    transform: translateY(-2px);
+  }
+
+  .card-type-bar {
+    padding: 7px 14px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .type-interactive { background: rgba(0,153,153,0.1); color: var(--teal-dark); }
+  .type-diagram { background: rgba(0,61,77,0.07); color: var(--navy); }
+  .type-coming { background: rgba(138,138,138,0.08); color: var(--muted); }
+  .type-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  .card-body {
+    padding: 18px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 14px;
+  }
   .card-link {
     font-size: 12px;
-    font-weight: 500;
-    color: #185fa5;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 5px;
   }
-  .card:hover .card-link { color: #0c447c; }
-  .card.interactive .card-link { color: #0f6e56; }
-  .card.interactive:hover .card-link { color: #085041; }
-  .arrow { width: 14px; height: 14px; transition: transform 0.15s; }
-  .card:hover .arrow { transform: translate(2px, -2px); }
-
-  .thesis {
-    background: #e6f1fb;
-    border: 0.5px solid #b5d4f4;
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin-bottom: 24px;
+  .proto-card:hover .card-link { color: var(--teal-dark); }
+  .card-link-muted {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: default;
   }
-  .thesis-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+
+  /* ── THESIS BLOCK ── */
+  .thesis-block {
+    background: linear-gradient(135deg, var(--navy) 0%, #005566 100%);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 36px 0;
+    color: white;
+  }
+  .thesis-block-label {
+    font-size: 10.5px;
+    font-weight: 700;
     text-transform: uppercase;
-    color: #185fa5;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.45);
     margin-bottom: 10px;
   }
-  .thesis-text { font-size: 13px; color: #0c447c; line-height: 1.7; }
-  .thesis-text strong { color: #042c53; font-weight: 500; }
-
-  .context-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0,1fr));
-    gap: 10px;
-    margin-bottom: 32px;
+  .thesis-block p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    max-width: 860px;
   }
-  .context-item {
-    background: #ffffff;
-    border: 0.5px solid #e5e5e3;
-    border-radius: 10px;
-    padding: 16px;
-  }
-  .context-label { font-size: 11px; color: #888780; margin-bottom: 5px; }
-  .context-value { font-size: 13px; font-weight: 500; color: #1a1a18; line-height: 1.4; }
+  .thesis-block strong { color: var(--orange); }
 
-  .footer {
-    background: #ffffff;
-    border-top: 0.5px solid #e5e5e3;
-    padding: 20px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .footer-left { font-size: 12px; color: #888780; }
-  .footer-right { font-size: 12px; color: #888780; }
-
-  @media (max-width: 680px) {
-    .nav { padding: 14px 20px; }
-    .hero { padding: 32px 20px; }
-    .hero-title { font-size: 24px; }
-    .main { padding: 24px 20px; }
-    .metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .cards { grid-template-columns: 1fr; }
-    .context-grid { grid-template-columns: 1fr; }
-    .footer { padding: 20px; flex-direction: column; gap: 6px; text-align: center; }
+  /* ── FOOTER ── */
+  .site-footer {
+    text-align: center;
+    padding: 24px 48px;
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
   }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-logo">Teamplay <span>Fleet Platform · Strategy Research</span></div>
-  <div class="nav-meta">Boston University × Siemens Healthineers · April 2026</div>
-</nav>
-
-<div class="hero">
-  <div class="hero-eyebrow">Platform Strategy Analysis · Digital Marketplace</div>
-  <h1 class="hero-title">From digital catalog to <em>workflow platform</em></h1>
-  <p class="hero-sub">A structured analysis of why Siemens Healthineers' Teamplay Marketplace has near-zero hospital adoption — and a governance-led recommendation for how to fix it.</p>
-  <div class="hero-tags">
-    <span class="tag">Marshall Van Alstyne · Platform Theory</span>
-    <span class="tag">6 Internal Stakeholder Surveys</span>
-    <span class="tag">3 External Hospital Interviews</span>
-    <span class="tag">Lane A / B / C Governance Model</span>
-    <span class="tag">90-Day Pilot Framework</span>
+<!-- HEADER -->
+<div class="site-header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Teamplay Fleet Platform · Strategy Research</div>
+    <h1 class="header-title">From digital catalog to <em>workflow platform</em></h1>
+    <p class="header-subtitle">A structured analysis of why Siemens Healthineers' Teamplay Marketplace has near-zero hospital adoption — and a governance-led recommendation for how to fix it.</p>
+    <div class="header-meta">
+      <div class="header-meta-pill">Marshall Van Alstyne · <span>Platform Theory</span></div>
+      <div class="header-meta-pill">6 <span>Internal Stakeholder Surveys</span></div>
+      <div class="header-meta-pill">3 <span>External Hospital Interviews</span></div>
+      <div class="header-meta-pill">Lane A / B / C <span>Governance Model</span></div>
+      <div class="header-meta-pill">90-Day <span>Pilot Framework</span></div>
+    </div>
   </div>
 </div>
 
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat">
+      <span class="stat-num">&lt;1%</span>
+      <span class="stat-label">Marketplace adoption rate</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">0 of 3</span>
+      <span class="stat-label">Hospital users aware of marketplace</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">9</span>
+      <span class="stat-label">Stakeholders interviewed</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">90 days</span>
+      <span class="stat-label">Pilot recommendation</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
 <div class="main">
 
-  <p class="section-label" style="margin-top:4px">Research snapshot</p>
-  <div class="metrics">
-    <div class="metric-card">
-      <div class="metric-label">Marketplace adoption rate</div>
-      <div class="metric-value">&lt;1%</div>
-      <div class="metric-sub"><span class="down">Reported by internal team</span></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">External awareness</div>
-      <div class="metric-value">0 of 3</div>
-      <div class="metric-sub"><span class="down">Hospital users aware of marketplace</span></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Stakeholders interviewed</div>
-      <div class="metric-value">9</div>
-      <div class="metric-sub"><span class="up">6 internal · 3 external</span></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Pilot recommendation</div>
-      <div class="metric-value">90 days</div>
-      <div class="metric-sub">3 enterprise fleet customers</div>
-    </div>
+  <!-- THESIS -->
+  <div class="thesis-block">
+    <div class="thesis-block-label">Core thesis</div>
+    <p><strong>Teamplay is underperforming because Siemens built a marketplace before building the workflow, governance, and service architecture required for platform network effects.</strong> The fix is not more app listings — it is repositioning Fleet as the marketplace entry point, separating the sponsor and provider layers, and standardizing the end-to-end app lifecycle across a governed three-lane partner model.</p>
   </div>
 
-  <p class="section-label">Interactive prototypes</p>
-  <div class="cards">
+  <!-- INTERACTIVE PROTOTYPES -->
+  <div class="section-title">Interactive prototypes</div>
+  <div class="card-grid">
 
-    <a class="card interactive" href="teamplay_fleet_dashboard_mockup.html">
-      <span class="card-badge badge-interactive">Interactive · demo this</span>
-      <div class="card-title">Fleet dashboard mockup</div>
-      <div class="card-desc">What the hospital experience should look like — apps surfaced through Fleet, usage tracking per scanner, Lane A/B/C attribution, support tickets, and peer-based recommendations.</div>
-      <div class="card-link">
-        Open interactive mockup
-        <svg class="arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+    <a href="teamplay_fleet_dashboard_mockup.html" class="proto-card">
+      <div class="card-type-bar type-interactive"><div class="type-dot"></div>Interactive · demo this</div>
+      <div class="card-body">
+        <div class="card-title">Fleet dashboard mockup</div>
+        <div class="card-desc">What the hospital experience should look like — apps surfaced through Fleet, usage tracking per scanner, Lane A/B/C attribution, support tickets, and peer-based recommendations.</div>
+        <span class="card-link">Open interactive mockup →</span>
       </div>
     </a>
 
-    <a class="card interactive" href="lane_b_partner_priority_matrix.html">
-      <span class="card-badge badge-interactive">Interactive · click each partner</span>
-      <div class="card-title">Lane B partner priority matrix</div>
-      <div class="card-desc">Priority partner shortlist for enterprise fleet customers — Aidoc, Nuance PowerScribe, Subtle Medical, Cerebriu, and the Intelerad avoid recommendation with Fleet hooks per partner.</div>
-      <div class="card-link">
-        Open partner matrix
-        <svg class="arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+    <a href="teamplay_marketplace.html" class="proto-card">
+      <div class="card-type-bar type-interactive"><div class="type-dot"></div>Interactive · demo this</div>
+      <div class="card-body">
+        <div class="card-title">Digital Marketplace mockup</div>
+        <div class="card-desc">The full app catalog experience — 72 apps filtered by Lane A/B/C governance, scanner compatibility, and clinical field. The page the "Browse marketplace" button should lead to.</div>
+        <span class="card-link">Open marketplace mockup →</span>
       </div>
     </a>
 
-    <a class="card" href="teamplay_workflow_diagram.html">
-      <span class="card-badge badge-static">Diagram · static</span>
-      <div class="card-title">Workflow orchestration model</div>
-      <div class="card-desc">The 7-stage app lifecycle Siemens must own across three governance lanes — Lane A (core), Lane B (complementary), Lane C (competitive-allowed). One standard across all partners.</div>
-      <div class="card-link">
-        View diagram
-        <svg class="arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-    </a>
-
-    <a class="card" href="siemens_platform_layer_separation.html">
-      <span class="card-badge badge-static">Diagram · static</span>
-      <div class="card-title">Platform layer separation</div>
-      <div class="card-desc">The framework for resolving Siemens' cannibalization fear — substrate, sponsor, and provider layers clearly separated. What Siemens keeps, what it opens, and where the real moat lives.</div>
-      <div class="card-link">
-        View diagram
-        <svg class="arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+    <a href="lane_b_partner_priority_matrix.html" class="proto-card">
+      <div class="card-type-bar type-interactive"><div class="type-dot"></div>Interactive · click each partner</div>
+      <div class="card-body">
+        <div class="card-title">Lane B partner priority matrix</div>
+        <div class="card-desc">Priority partner shortlist for enterprise fleet customers — Aidoc, Nuance PowerScribe, Subtle Medical, Cerebriu, and the Intelerad avoid recommendation with Fleet hooks per partner.</div>
+        <span class="card-link">Open partner matrix →</span>
       </div>
     </a>
 
   </div>
 
-  <div class="thesis">
-    <div class="thesis-label">Core thesis</div>
-    <div class="thesis-text"><strong>Teamplay is underperforming because Siemens built a marketplace before building the workflow, governance, and service architecture required for platform network effects.</strong> The fix is not more app listings — it is repositioning Fleet as the marketplace entry point, separating the sponsor and provider layers, and standardizing the end-to-end app lifecycle across a governed three-lane partner model.</div>
+  <!-- DIAGRAMS -->
+  <div class="section-title">Diagrams</div>
+  <div class="card-grid">
+
+    <a href="teamplay_governance_platform.html" class="proto-card">
+      <div class="card-type-bar type-diagram"><div class="type-dot"></div>Diagram · combined framework</div>
+      <div class="card-body">
+        <div class="card-title">Governance & platform architecture</div>
+        <div class="card-desc">The Lane A/B/C partner governance model and the substrate/sponsor/provider layer separation unified in a single diagram. What Siemens keeps, what it opens, and how partner access is controlled.</div>
+        <span class="card-link">View diagram →</span>
+      </div>
+    </a>
+
+    <a href="teamplay_data_flywheel.html" class="proto-card">
+      <div class="card-type-bar type-diagram"><div class="type-dot"></div>Diagram · image-driven</div>
+      <div class="card-body">
+        <div class="card-title">Data coordination & the flywheel</div>
+        <div class="card-desc">Same-side network effects through fleet data coordination — cross-hospital benchmarks, predictive maintenance, and protocol optimization. Contrasted with GE Predix's failure. Van Alstyne B2B framework applied.</div>
+        <span class="card-link">View diagram →</span>
+      </div>
+    </a>
+
   </div>
 
-  <p class="section-label">Research context</p>
-  <div class="context-grid">
-    <div class="context-item">
-      <div class="context-label">Internal research</div>
-      <div class="context-value">6 Siemens stakeholder surveys across Portfolio, Product, Business Development, and MR leadership</div>
+  <!-- CASE STUDIES (coming) -->
+  <div class="section-title">Case studies — platform theory in practice</div>
+  <div class="card-grid">
+
+    <div class="proto-card" style="opacity:0.65; cursor:default;">
+      <div class="card-type-bar type-coming"><div class="type-dot"></div>Case study · coming soon</div>
+      <div class="card-body">
+        <div class="card-title">Autodesk: from software to platform</div>
+        <div class="card-desc">How Autodesk opened its CAD platform to third-party developers and transformed from a product company into an ecosystem — and what Siemens can apply from that transition.</div>
+        <span class="card-link-muted">Coming soon</span>
+      </div>
     </div>
-    <div class="context-item">
-      <div class="context-label">External research</div>
-      <div class="context-value">3 hospital interviews — NYU Langone, BU Neuroimaging Center, Atrius Health</div>
+
+    <div class="proto-card" style="opacity:0.65; cursor:default;">
+      <div class="card-type-bar type-coming"><div class="type-dot"></div>Case study · coming soon</div>
+      <div class="card-body">
+        <div class="card-title">Airbus Skywise: aviation data flywheel</div>
+        <div class="card-desc">How Airbus built a cross-airline data coordination platform — and how Skywise's network effects model maps directly to Siemens' scanner fleet opportunity.</div>
+        <span class="card-link-muted">Coming soon</span>
+      </div>
     </div>
-    <div class="context-item">
-      <div class="context-label">Key external finding</div>
-      <div class="context-value">Active Siemens fleet customer at Atrius Health had never heard of the Teamplay marketplace</div>
+
+    <div class="proto-card" style="opacity:0.65; cursor:default;">
+      <div class="card-type-bar type-coming"><div class="type-dot"></div>Case study · coming soon</div>
+      <div class="card-body">
+        <div class="card-title">GE Predix: why the thesis failed</div>
+        <div class="card-desc">GE Predix had the same industrial data platform vision. What went wrong, why the installed base mattered, and why Siemens is positioned differently.</div>
+        <span class="card-link-muted">Coming soon</span>
+      </div>
     </div>
-    <div class="context-item">
-      <div class="context-label">Framework applied</div>
-      <div class="context-value">Marshall Van Alstyne platform theory — cross-side network effects, governance, interaction design</div>
+
+  </div>
+
+  <!-- RESEARCH CONTEXT -->
+  <div class="section-title">Research context</div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px;">
+      <div style="font-size:12px; font-weight:700; color:var(--navy); margin-bottom:8px;">Internal research</div>
+      <div style="font-size:12px; color:var(--muted); line-height:1.6;">6 Siemens stakeholder surveys across Portfolio, Product, Business Development, and MR leadership</div>
     </div>
-    <div class="context-item">
-      <div class="context-label">Reported adoption</div>
-      <div class="context-value">Less than 1% of eligible hospital customers per internal Siemens survey respondent</div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px;">
+      <div style="font-size:12px; font-weight:700; color:var(--navy); margin-bottom:8px;">External research</div>
+      <div style="font-size:12px; color:var(--muted); line-height:1.6;">3 hospital interviews — NYU Langone, BU Neuroimaging Center, Atrius Health</div>
     </div>
-    <div class="context-item">
-      <div class="context-label">Strategic recommendation</div>
-      <div class="context-value">Fleet as entry point · 3-lane governance · 90-day enterprise pilot · shared SLA standards</div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px;">
+      <div style="font-size:12px; font-weight:700; color:var(--navy); margin-bottom:8px;">Key external finding</div>
+      <div style="font-size:12px; color:var(--muted); line-height:1.6;">Active Siemens fleet customer at Atrius Health had never heard of the Teamplay marketplace</div>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px;">
+      <div style="font-size:12px; font-weight:700; color:var(--navy); margin-bottom:8px;">Framework applied</div>
+      <div style="font-size:12px; color:var(--muted); line-height:1.6;">Marshall Van Alstyne platform theory — cross-side network effects, governance, interaction design</div>
     </div>
   </div>
 
 </div>
 
-<footer class="footer">
-  <div class="footer-left">Boston University × Siemens Healthineers · MBA Strategy Consulting · April 2026</div>
-  <div class="footer-right">caitlinyu98 · All research anonymized</div>
-</footer>
+<!-- FOOTER -->
+<div class="site-footer">
+  Boston University × Siemens Healthineers · MBA Strategy Consulting · April 2026 · caitlinyu98 · All research anonymized
+</div>
 
 </body>
 </html>

@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teamplay Marketplace — Mockup</title>
+<style>
+  :root {
+    --teal: #009999;
+    --teal-dark: #007a7a;
+    --navy: #003d4d;
+    --orange: #e87722;
+    --orange-light: #f5a623;
+    --bg: #f4f4f2;
+    --surface: #ffffff;
+    --border: #e0e0dc;
+    --text: #1a1a1a;
+    --muted: #666;
+    --lane-a: #009999;
+    --lane-b: #5b8db8;
+    --lane-c: #8a8a8a;
+    --tag-bg: #f0f0ee;
+    --active-green: #2e8b57;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    height: 52px;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .back-link {
+    color: var(--teal);
+    text-decoration: none;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px 6px 0;
+    border-right: 1px solid var(--border);
+    margin-right: 20px;
+    white-space: nowrap;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  .brand {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 32px;
+  }
+  .brand-sub { font-weight: 400; color: var(--muted); }
+
+  nav { display: flex; gap: 0; }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 0 16px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s;
+  }
+  nav a:hover { color: var(--text); }
+  nav a.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+    font-weight: 500;
+  }
+
+  .org-badge {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--tag-bg);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+  }
+
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 0 20px 12px;
+  }
+
+  .search-box {
+    margin: 0 16px 20px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 8px 10px 8px 32px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+  }
+  .search-box input:focus { border-color: var(--teal); }
+  .search-icon {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .filter-group { margin-bottom: 4px; }
+  .filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+  }
+  .filter-header:hover { background: var(--bg); }
+  .filter-chevron { font-size: 10px; color: var(--muted); }
+
+  .filter-options { padding: 0 20px 8px; }
+  .filter-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 12px;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .filter-option input[type="checkbox"] {
+    accent-color: var(--teal);
+    width: 13px;
+    height: 13px;
+  }
+
+  .filter-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 20px;
+  }
+
+  /* Lane filter pills */
+  .lane-filters {
+    padding: 0 16px 16px;
+  }
+  .lane-filter-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .lane-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .lane-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    font-size: 12px;
+  }
+  .lane-pill:hover { background: var(--bg); }
+  .lane-pill.selected { border-color: currentColor; background: #f8f8f8; }
+  .lane-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .lane-a-dot { background: var(--lane-a); }
+  .lane-b-dot { background: var(--lane-b); }
+  .lane-c-dot { background: var(--lane-c); }
+  .lane-pill-text { flex: 1; }
+  .lane-pill-name { font-weight: 500; color: var(--text); display: block; }
+  .lane-pill-desc { font-size: 10.5px; color: var(--muted); display: block; line-height: 1.3; margin-top: 1px; }
+  .lane-count {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--tag-bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    flex: 1;
+    padding: 28px 32px;
+    min-width: 0;
+  }
+
+  .marketplace-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .marketplace-header h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .marketplace-header p {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .sort-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .sort-btn {
+    padding: 5px 12px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text);
+  }
+  .sort-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+
+  /* ── HERO BANNER ── */
+  .hero-banner {
+    background: linear-gradient(135deg, var(--navy) 0%, #005566 60%, var(--teal-dark) 100%);
+    border-radius: 10px;
+    padding: 24px 32px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-banner::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero-text h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 6px;
+  }
+  .hero-text p {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.7);
+    max-width: 420px;
+    line-height: 1.6;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 28px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--orange-light);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .hero-stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+    margin-top: 28px;
+  }
+  .section-label:first-of-type { margin-top: 0; }
+
+  /* ── APP GRID ── */
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .app-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .app-card:hover {
+    border-color: var(--teal);
+    box-shadow: 0 2px 12px rgba(0,153,153,0.1);
+    transform: translateY(-1px);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .app-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .lane-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.03em;
+  }
+  .badge-a { background: rgba(0,153,153,0.1); color: var(--lane-a); }
+  .badge-b { background: rgba(91,141,184,0.12); color: var(--lane-b); }
+  .badge-c { background: rgba(138,138,138,0.12); color: var(--lane-c); }
+
+  .app-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .app-vendor {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .app-desc {
+    font-size: 11.5px;
+    color: #555;
+    line-height: 1.5;
+    flex: 1;
+    margin-bottom: 12px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+  .tag {
+    font-size: 10.5px;
+    background: var(--tag-bg);
+    color: var(--muted);
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+  .compat-label {
+    font-size: 10.5px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .compat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--active-green);
+    flex-shrink: 0;
+  }
+  .install-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 5px;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .install-btn:hover { background: var(--teal); color: white; }
+  .install-btn.installed {
+    border-color: var(--active-green);
+    color: var(--active-green);
+    cursor: default;
+  }
+  .install-btn.installed:hover { background: transparent; color: var(--active-green); }
+
+  /* Fleet-recommended ribbon */
+  .recommended-ribbon {
+    position: absolute;
+    top: 12px;
+    right: -1px;
+    background: var(--orange);
+    color: white;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px 0 0 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 0 8px;
+  }
+  .page-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .page-btn.active { background: var(--teal); color: white; border-color: var(--teal); font-weight: 600; }
+  .page-btn:hover:not(.active) { border-color: var(--teal); color: var(--teal); }
+
+  /* ── GOVERNANCE INFO BAR ── */
+  .governance-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .gov-lane {
+    flex: 1;
+    padding: 0 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .gov-lane:not(:last-child) {
+    border-right: 1px solid var(--border);
+    margin-right: 0;
+  }
+  .gov-lane-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .gov-lane-text {}
+  .gov-lane-name {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .gov-lane-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .gov-a .gov-lane-name { color: var(--lane-a); }
+  .gov-b .gov-lane-name { color: var(--lane-b); }
+  .gov-c .gov-lane-name { color: var(--lane-c); }
+  .gov-a .gov-lane-icon { background: rgba(0,153,153,0.1); }
+  .gov-b .gov-lane-icon { background: rgba(91,141,184,0.1); }
+  .gov-c .gov-lane-icon { background: rgba(138,138,138,0.1); }
+
+  .gov-bar-label {
+    width: 100px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 20px;
+    border-right: 1px solid var(--border);
+  }
+  .gov-bar-label span {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .gov-bar-link {
+    font-size: 11px;
+    color: var(--teal);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .gov-bar-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="index.html" class="back-link">← Back to overview</a>
+  <div class="brand">Teamplay <span class="brand-sub">&nbsp;Fleet Platform</span></div>
+  <nav>
+    <a href="teamplay_fleet_dashboard_mockup.html">My fleet</a>
+    <a href="#" class="active">Marketplace</a>
+    <a href="#">Analytics</a>
+    <a href="#">Support</a>
+    <a href="#">Settings</a>
+  </nav>
+  <div class="org-badge">UNC Health · Enterprise</div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Find your apps</div>
+
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+      <input type="text" placeholder="Search app name, keyword…">
+    </div>
+
+    <!-- Lane Filter -->
+    <div class="lane-filters">
+      <span class="lane-filter-label">Governance Lane</span>
+      <div class="lane-pills">
+        <div class="lane-pill selected">
+          <div class="lane-dot lane-a-dot"></div>
+          <div class="lane-pill-text">
+            <span class="lane-pill-name">Lane A — Siemens</span>
+            <span class="lane-pill-desc">Native · SLA guaranteed</span>
+          </div>
+          <span class="lane-count">18</span>
+        </div>
+        <div class="lane-pill">
+          <div class="lane-dot lane-b-dot"></div>
+          <div class="lane-pill-text">
+            <span class="lane-pill-name">Lane B — Co-promoted</span>
+            <span class="lane-pill-desc">Vetted partners · joint SLA</span>
+          </div>
+          <span class="lane-count">31</span>
+        </div>
+        <div class="lane-pill">
+          <div class="lane-dot lane-c-dot"></div>
+          <div class="lane-pill-text">
+            <span class="lane-pill-name">Lane C — Vendor-led</span>
+            <span class="lane-pill-desc">Self-managed · vendor SLA</span>
+          </div>
+          <span class="lane-count">23</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <!-- Application Family -->
+    <div class="filter-group">
+      <div class="filter-header">
+        Application Family
+        <span class="filter-chevron">▲</span>
+      </div>
+      <div class="filter-options">
+        <label class="filter-option"><input type="checkbox"> MAGNETOM (MR)</label>
+        <label class="filter-option"><input type="checkbox"> SOMATOM (CT)</label>
+        <label class="filter-option"><input type="checkbox"> Biograph (PET-CT)</label>
+        <label class="filter-option"><input type="checkbox"> syngo.via</label>
+        <label class="filter-option"><input type="checkbox"> teamplay</label>
+      </div>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <!-- Clinical Field -->
+    <div class="filter-group">
+      <div class="filter-header">
+        Clinical Field
+        <span class="filter-chevron">▲</span>
+      </div>
+      <div class="filter-options">
+        <label class="filter-option"><input type="checkbox"> Radiology AI</label>
+        <label class="filter-option"><input type="checkbox"> Cardiology</label>
+        <label class="filter-option"><input type="checkbox"> Oncology</label>
+        <label class="filter-option"><input type="checkbox"> Neurology</label>
+        <label class="filter-option"><input type="checkbox"> MSK</label>
+        <label class="filter-option"><input type="checkbox"> Workflow</label>
+      </div>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <!-- App Type -->
+    <div class="filter-group">
+      <div class="filter-header">
+        App Type
+        <span class="filter-chevron">▲</span>
+      </div>
+      <div class="filter-options">
+        <label class="filter-option"><input type="checkbox"> AI Detection</label>
+        <label class="filter-option"><input type="checkbox"> Dose Management</label>
+        <label class="filter-option"><input type="checkbox"> Reporting</label>
+        <label class="filter-option"><input type="checkbox"> Triage / Routing</label>
+        <label class="filter-option"><input type="checkbox"> Post-processing</label>
+      </div>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <!-- Installation Type -->
+    <div class="filter-group">
+      <div class="filter-header">
+        Installation Type
+        <span class="filter-chevron">▼</span>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-header">
+        Manufacturer
+        <span class="filter-chevron">▼</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- Header -->
+    <div class="marketplace-header">
+      <div>
+        <h1>Digital Marketplace</h1>
+        <p>Explore apps for cutting-edge care from Siemens Healthineers and solution partners · <strong>72 available</strong></p>
+      </div>
+      <div class="sort-bar">
+        Sort by:
+        <button class="sort-btn active">Newest</button>
+        <button class="sort-btn">Oldest</button>
+        <button class="sort-btn">A–Z</button>
+        <button class="sort-btn">Z–A</button>
+      </div>
+    </div>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h2>Welcome to the Digital Marketplace</h2>
+        <p>All apps are certified through Siemens' Lane A/B/C governance framework — ensuring every tool meets your fleet's SLA, regulatory, and integration standards before it reaches your scanners.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num">72</span>
+          <span class="hero-stat-label">Apps available</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">38</span>
+          <span class="hero-stat-label">Your scanners</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">67%</span>
+          <span class="hero-stat-label">Avg adoption</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Governance Lane Bar -->
+    <div class="governance-bar">
+      <div class="gov-bar-label">
+        <span>Governance</span>
+        <a href="teamplay_governance_platform.html" class="gov-bar-link">Learn more ↗</a>
+      </div>
+      <div class="gov-lane gov-a">
+        <div class="gov-lane-icon">🔒</div>
+        <div class="gov-lane-text">
+          <div class="gov-lane-name">Lane A — Siemens native</div>
+          <div class="gov-lane-desc">Built and fully supported by Siemens. Guaranteed SLA, scanner-native integration, immediate deployment.</div>
+        </div>
+      </div>
+      <div class="gov-lane gov-b">
+        <div class="gov-lane-icon">🤝</div>
+        <div class="gov-lane-text">
+          <div class="gov-lane-name">Lane B — Co-promoted partners</div>
+          <div class="gov-lane-desc">Certified third-party apps. Siemens co-sells and provides joint SLA coverage. Fleet-surfaced by default.</div>
+        </div>
+      </div>
+      <div class="gov-lane gov-c">
+        <div class="gov-lane-icon">🛒</div>
+        <div class="gov-lane-text">
+          <div class="gov-lane-name">Lane C — Vendor-led</div>
+          <div class="gov-lane-desc">Self-managed by vendor. Passed Siemens certification but SLA and support are vendor-owned.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommended for your fleet -->
+    <div class="section-label">⭐ Recommended for UNC Health</div>
+    <div class="app-grid">
+
+      <div class="app-card">
+        <div class="recommended-ribbon">Fleet match</div>
+        <div class="card-top">
+          <div class="app-icon" style="background:#e8f5f5; color:var(--teal);">🧠</div>
+          <span class="lane-badge badge-b">Lane B</span>
+        </div>
+        <div class="app-name">Cerebriu — MRI Brain Triage</div>
+        <div class="app-vendor">Cerebriu · co-promoted</div>
+        <div class="app-desc">Automated prioritization of urgent MRI findings. Flags stroke, bleed, and tumor cases directly to radiologist worklist.</div>
+        <div class="card-tags"><span class="tag">MR</span><span class="tag">AI</span><span class="tag">Triage</span><span class="tag">Neuro</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>MAGNETOM compatible</span>
+          <button class="install-btn">Request</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="recommended-ribbon">Fleet match</div>
+        <div class="card-top">
+          <div class="app-icon" style="background:#eef2f8; color:#5b8db8;">⚡</div>
+          <span class="lane-badge badge-b">Lane B</span>
+        </div>
+        <div class="app-name">Subtle Medical — Scan Time Reduction</div>
+        <div class="app-vendor">Subtle Medical · co-promoted</div>
+        <div class="app-desc">AI reconstruction that cuts MR/PET scan time up to 50% with no image quality loss. Fleet-wide throughput gains.</div>
+        <div class="card-tags"><span class="tag">MR</span><span class="tag">PET</span><span class="tag">AI Recon</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>MAGNETOM compatible</span>
+          <button class="install-btn">Request</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Lane A Apps -->
+    <div class="section-label">🔒 Lane A — Siemens Native</div>
+    <div class="app-grid">
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#e8f5f5; color:var(--teal);">AI</div>
+          <span class="lane-badge badge-a">Lane A</span>
+        </div>
+        <div class="app-name">Chest AI — Critical Findings</div>
+        <div class="app-vendor">Siemens Healthineers</div>
+        <div class="app-desc">Real-time AI detection of critical chest pathologies — pneumothorax, PE, aortic aneurysm — surfaced before radiologist read.</div>
+        <div class="card-tags"><span class="tag">CT</span><span class="tag">AI</span><span class="tag">Critical care</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>SOMATOM compatible</span>
+          <button class="install-btn installed">✓ Installed</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#e8f5f5; color:var(--teal);">MR</div>
+          <span class="lane-badge badge-a">Lane A</span>
+        </div>
+        <div class="app-name">Dose Protocol Manager</div>
+        <div class="app-vendor">Siemens Healthineers</div>
+        <div class="app-desc">Fleet-wide CT dose standardization and protocol optimization. Tracks dose per scanner and compares against anonymized peer benchmarks.</div>
+        <div class="card-tags"><span class="tag">CT</span><span class="tag">Dose</span><span class="tag">Protocol</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>SOMATOM compatible</span>
+          <button class="install-btn installed">✓ Installed</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#e8f5f5; color:var(--teal);">📊</div>
+          <span class="lane-badge badge-a">Lane A</span>
+        </div>
+        <div class="app-name">ClariCT.AI — Image Denoising</div>
+        <div class="app-vendor">Siemens Healthineers</div>
+        <div class="app-desc">AI-powered CT image denoising solution. Reduces noise while preserving diagnostic detail, enabling lower-dose protocols.</div>
+        <div class="card-tags"><span class="tag">CT</span><span class="tag">AI</span><span class="tag">Imaging</span><span class="tag">Cardiac CT</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>SOMATOM compatible</span>
+          <button class="install-btn">Install</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#e8f5f5; color:var(--teal);">❤️</div>
+          <span class="lane-badge badge-a">Lane A</span>
+        </div>
+        <div class="app-name">cvi42 — Cardiac MR Analytics</div>
+        <div class="app-vendor">Siemens Healthineers</div>
+        <div class="app-desc">Post-processing and analysis for cardiac MRI including 4D flow. Automated ventricular quantification and strain reporting.</div>
+        <div class="card-tags"><span class="tag">Cardiac MR</span><span class="tag">4D Flow</span><span class="tag">AI</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>MAGNETOM compatible</span>
+          <button class="install-btn">Install</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Lane B Apps -->
+    <div class="section-label">🤝 Lane B — Co-promoted Partners</div>
+    <div class="app-grid">
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#eef2f8; color:#5b8db8;">3P</div>
+          <span class="lane-badge badge-b">Lane B</span>
+        </div>
+        <div class="app-name">Workflow.AI — Radiology Triage</div>
+        <div class="app-vendor">Nines · co-promoted</div>
+        <div class="app-desc">AI-powered worklist prioritization and radiology workflow automation. Integrates with your PACS and syngo.via routing.</div>
+        <div class="card-tags"><span class="tag">Workflow</span><span class="tag">AI</span><span class="tag">Triage</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>Fleet integrated</span>
+          <button class="install-btn installed">✓ Installed</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#eef2f8; color:#5b8db8;">📝</div>
+          <span class="lane-badge badge-b">Lane B</span>
+        </div>
+        <div class="app-name">Nuance PowerScribe — AI Reporting</div>
+        <div class="app-vendor">Nuance · co-promoted</div>
+        <div class="app-desc">AI-assisted structured radiology reporting with auto-impression drafting. FHIR-formatted output flows directly into Epic.</div>
+        <div class="card-tags"><span class="tag">Reporting</span><span class="tag">AI</span><span class="tag">Epic</span><span class="tag">FHIR</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>Epic compatible</span>
+          <button class="install-btn">Request</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#eef2f8; color:#5b8db8;">🫀</div>
+          <span class="lane-badge badge-b">Lane B</span>
+        </div>
+        <div class="app-name">Intelerad — PACS Integration</div>
+        <div class="app-vendor">Intelerad · co-promoted</div>
+        <div class="app-desc">Enterprise medical imaging and PACS with Fleet hooks. Bidirectional integration — avoid this for standalone deployments.</div>
+        <div class="card-tags"><span class="tag">PACS</span><span class="tag">Workflow</span><span class="tag">Enterprise</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>Fleet integrated</span>
+          <button class="install-btn">Request</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Lane C Apps -->
+    <div class="section-label">🛒 Lane C — Vendor-led</div>
+    <div class="app-grid">
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#f4f4f4; color:#8a8a8a;">3P</div>
+          <span class="lane-badge badge-c">Lane C</span>
+        </div>
+        <div class="app-name">Quantib — Prostate MRI</div>
+        <div class="app-vendor">Quantib · vendor-led</div>
+        <div class="app-desc">AI-powered prostate MRI segmentation, PI-RADS scoring, and lesion detection. FDA cleared, CE marked.</div>
+        <div class="card-tags"><span class="tag">MR</span><span class="tag">AI</span><span class="tag">Prostate</span><span class="tag">MSK</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot" style="background:#e87722;"></span>SLA pending</span>
+          <button class="install-btn">Request</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#f4f4f4; color:#8a8a8a;">CT</div>
+          <span class="lane-badge badge-c">Lane C</span>
+        </div>
+        <div class="app-name">Aidoc — PE Detection</div>
+        <div class="app-vendor">Aidoc · vendor-led</div>
+        <div class="app-desc">Automated pulmonary embolism detection on CT pulmonary angiography. Flags critical cases for immediate radiologist review.</div>
+        <div class="card-tags"><span class="tag">CT</span><span class="tag">AI</span><span class="tag">Critical care</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot" style="background:#aaa;"></span>In review</span>
+          <button class="install-btn">Request</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#f4f4f4; color:#8a8a8a;">🦴</div>
+          <span class="lane-badge badge-c">Lane C</span>
+        </div>
+        <div class="app-name">BoneView — MSK AI</div>
+        <div class="app-vendor">Gleamer · vendor-led</div>
+        <div class="app-desc">Instant bone fracture detection for radiologists and ED physicians. Works on plain X-ray, CT scout, and full CT datasets.</div>
+        <div class="card-tags"><span class="tag">AI</span><span class="tag">MSK</span><span class="tag">Fracture</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>SOMATOM compatible</span>
+          <button class="install-btn">Request</button>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="card-top">
+          <div class="app-icon" style="background:#f4f4f4; color:#8a8a8a;">☢️</div>
+          <span class="lane-badge badge-c">Lane C</span>
+        </div>
+        <div class="app-name">Voximetry Torch® — Dose Assessment</div>
+        <div class="app-vendor">Voximetry · vendor-led</div>
+        <div class="app-desc">Monte Carlo-based dose assessment for molecular imaging and NM. Full body dosimetry from SPECT/CT and PET data.</div>
+        <div class="card-tags"><span class="tag">Cancer</span><span class="tag">Dose</span><span class="tag">NM</span><span class="tag">Molecular</span></div>
+        <div class="card-footer">
+          <span class="compat-label"><span class="compat-dot"></span>Biograph compatible</span>
+          <button class="install-btn">Request</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">4</button>
+      <button class="page-btn">…</button>
+      <button class="page-btn">9</button>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Sort buttons
+  document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Lane pills toggle
+  document.querySelectorAll('.lane-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      pill.classList.toggle('selected');
+    });
+  });
+
+  // Connect "Browse marketplace" from fleet dashboard
+  // The fleet dashboard's "+ Browse marketplace ↗" button can link here
+</script>
+</body>
+</html>
