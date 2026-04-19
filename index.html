@@ -134,7 +134,13 @@
   /* ── CARD GRID ── */
   .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     margin-bottom: 8px;
   }
@@ -314,20 +320,11 @@
       </div>
     </a>
 
-    <a href="lane_b_partner_priority_matrix.html" class="proto-card">
-      <div class="card-type-bar type-interactive"><div class="type-dot"></div>Interactive · click each partner</div>
-      <div class="card-body">
-        <div class="card-title">Lane B partner priority matrix</div>
-        <div class="card-desc">Priority partner shortlist for enterprise fleet customers — Aidoc, Nuance PowerScribe, Subtle Medical, Cerebriu, and the Intelerad avoid recommendation with Fleet hooks per partner.</div>
-        <span class="card-link">Open partner matrix →</span>
-      </div>
-    </a>
-
   </div>
 
   <!-- DIAGRAMS -->
   <div class="section-title">Diagrams</div>
-  <div class="card-grid">
+  <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
 
     <a href="teamplay_governance_platform.html" class="proto-card">
       <div class="card-type-bar type-diagram"><div class="type-dot"></div>Diagram · combined framework</div>
@@ -351,7 +348,7 @@
 
   <!-- CASE STUDIES (coming) -->
   <div class="section-title">Case studies — platform theory in practice</div>
-  <div class="card-grid">
+  <div class="card-grid-3">
 
     <div class="proto-card" style="opacity:0.65; cursor:default;">
       <div class="card-type-bar type-coming"><div class="type-dot"></div>Case study · coming soon</div>
