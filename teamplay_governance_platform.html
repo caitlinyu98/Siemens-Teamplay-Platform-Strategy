@@ -4,923 +4,633 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teamplay — Governance & Platform Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --teal: #009999;
-    --teal-dark: #007a7a;
-    --navy: #003d4d;
-    --orange: #e87722;
-    --bg: #f4f4f2;
-    --surface: #ffffff;
-    --border: #e0e0dc;
-    --text: #1a1a1a;
-    --muted: #666;
-    --lane-a: #009999;
-    --lane-b: #5b8db8;
-    --lane-c: #8a8a8a;
-    --substrate: #1a3a4a;
-    --sponsor: #003d4d;
-    --provider: #005566;
+    --navy:      #1A3A4A;
+    --navy-deep: #0F2530;
+    --teal:      #0E7A7A;
+    --teal-light:#E8F4F4;
+    --teal-mid:  #B8DADA;
+    --orange:    #C25A14;
+    --orange-light:#FDF0E8;
+    --orange-mid:#F0C4A0;
+    --white:     #FFFFFF;
+    --grey-100:  #F5F7F9;
+    --grey-200:  #E8ECF0;
+    --grey-400:  #9AABB8;
+    --grey-600:  #556070;
+    --text:      #1A2530;
+    --text-mid:  #445566;
+    --insight-bg:#FFF8F0;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    background: var(--grey-100);
     color: var(--text);
-    font-size: 13px;
-    line-height: 1.5;
+    min-height: 100vh;
   }
 
+  /* ── Nav bar ── */
   .topbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 32px;
+    background: var(--navy-deep);
+    padding: 12px 32px;
     display: flex;
     align-items: center;
-    height: 52px;
-    gap: 0;
+    justify-content: space-between;
   }
-  .back-link {
-    color: var(--teal);
+  .topbar a {
+    color: var(--grey-400);
     text-decoration: none;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 16px 6px 0;
-    border-right: 1px solid var(--border);
-    margin-right: 20px;
-  }
-  .back-link:hover { text-decoration: underline; }
-  .brand {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--navy);
-    margin-right: auto;
-  }
-  .brand-sub { font-weight: 400; color: var(--muted); }
-  .page-title {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  .page-wrap {
-    max-width: 1160px;
-    margin: 0 auto;
-    padding: 36px 32px 60px;
-  }
-
-  /* ── INTRO ── */
-  .intro {
-    margin-bottom: 36px;
-  }
-  .intro h1 {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 8px;
-    line-height: 1.3;
-  }
-  .intro p {
     font-size: 13px;
-    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .topbar a:hover { color: var(--white); }
+  .topbar-brand {
+    font-size: 12px;
+    color: var(--grey-400);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    background: var(--navy);
+    padding: 40px 48px 36px;
+    border-bottom: 3px solid var(--orange);
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+    max-width: 700px;
+  }
+  .page-header p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--teal-mid);
     max-width: 680px;
     line-height: 1.6;
   }
-  .diagram-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .badge {
     font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    background: var(--surface);
-    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
     padding: 4px 10px;
     border-radius: 4px;
-    margin-bottom: 16px;
+    background: rgba(255,255,255,0.1);
+    color: var(--grey-400);
+    letter-spacing: 0.04em;
   }
 
-  /* ── MAIN DIAGRAM ── */
-  .diagram {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 32px;
+  /* ── Main layout ── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 32px 48px;
   }
 
-  /* Layer rows */
-  .layer-row {
+  .framework-grid {
     display: grid;
-    grid-template-columns: 160px 1fr;
-    border-bottom: 1px solid var(--border);
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: start;
   }
-  .layer-row:last-child { border-bottom: none; }
 
-  .layer-label {
-    padding: 24px 20px;
+  /* ── Panel shells ── */
+  .panel {
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  .panel-header {
+    padding: 16px 22px;
+    background: var(--grey-100);
+    border-bottom: 1px solid var(--grey-200);
+  }
+  .panel-header h2 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-600);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Layer blocks ── */
+  .layers-wrap {
+    padding: 22px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 0;
+  }
+
+  .layer-block {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid transparent;
+  }
+  .layer-block + .layer-block { margin-top: 0; }
+
+  .layer-inner {
+    background: var(--navy);
+    padding: 18px 20px 16px;
     position: relative;
   }
-  .layer-label::after {
+  .layer-inner::before {
     content: '';
     position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--border);
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--orange);
   }
 
-  .layer-num {
+  .layer-tag {
     font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    color: var(--grey-400);
     letter-spacing: 0.1em;
+    text-transform: uppercase;
     margin-bottom: 4px;
-    opacity: 0.7;
   }
-  .layer-name {
-    font-size: 12px;
+  .layer-title {
+    font-size: 13px;
     font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 4px;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
   }
   .layer-sub {
-    font-size: 10.5px;
-    line-height: 1.4;
-    opacity: 0.8;
-  }
-  .layer-badge {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 9.5px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 3px;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--orange-mid);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    width: fit-content;
-  }
-
-  .layer-content {
-    padding: 20px 24px;
-  }
-
-  /* ─ Layer 0: Governance (top) ─ */
-  .row-governance {
-    background: var(--navy);
-  }
-  .row-governance .layer-label {
-    background: rgba(255,255,255,0.05);
-    color: white;
-  }
-  .row-governance .layer-label::after { background: rgba(255,255,255,0.15); }
-  .row-governance .layer-content {
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-
-  .gov-lane-col {
-    flex: 1;
-    padding: 8px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .gov-lane-col:not(:last-child) {
-    border-right: 1px solid rgba(255,255,255,0.12);
-  }
-  .gov-lane-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .gov-lane-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .dot-a { background: var(--teal); }
-  .dot-b { background: var(--lane-b); }
-  .dot-c { background: rgba(255,255,255,0.45); }
-
-  .gov-lane-title {
-    font-size: 12.5px;
-    font-weight: 700;
-    color: white;
-  }
-  .gov-lane-subtitle {
-    font-size: 10.5px;
-    color: rgba(255,255,255,0.55);
     margin-bottom: 10px;
   }
-
-  .gov-items {
+  .layer-items {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 100%;
+    flex-wrap: wrap;
+    gap: 7px;
   }
-  .gov-item {
-    font-size: 10.5px;
-    color: rgba(255,255,255,0.75);
-    padding: 3px 8px;
+  .layer-item {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.08);
+    padding: 4px 10px;
     border-radius: 4px;
-    background: rgba(255,255,255,0.06);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .gov-item::before {
-    content: '→';
-    color: rgba(255,255,255,0.35);
-    font-size: 9px;
-    flex-shrink: 0;
+    font-weight: 400;
   }
 
-  /* connector arrows going down */
-  .gov-arrows {
+  /* Arrow between layers */
+  .layer-arrow {
     display: flex;
-    padding: 10px 24px 0;
-    gap: 0;
-    background: var(--navy);
     justify-content: center;
+    align-items: center;
+    height: 38px;
+    position: relative;
   }
-  .gov-arrow {
-    flex: 1;
-    text-align: center;
-    font-size: 18px;
-    color: rgba(255,255,255,0.2);
-    padding-bottom: 8px;
-    line-height: 1;
+  .layer-arrow::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--teal);
+    transform: translateX(-50%);
   }
-
-  /* ─ Layer 3: Provider (open layer) ─ */
-  .row-provider {
-    background: #f8fffe;
-  }
-  .row-provider .layer-label {
-    background: linear-gradient(180deg, rgba(0,153,153,0.06) 0%, rgba(0,153,153,0.02) 100%);
-    border-color: rgba(0,153,153,0.15);
-    color: var(--text);
-  }
-  .row-provider .layer-label .layer-name { color: var(--teal-dark); }
-  .row-provider .layer-label .layer-num { color: var(--teal); }
-
-  /* ─ Layer 2: Sponsor ─ */
-  .row-sponsor {
-    background: #f7fafe;
-  }
-  .row-sponsor .layer-label {
-    background: linear-gradient(180deg, rgba(91,141,184,0.08) 0%, rgba(91,141,184,0.03) 100%);
-    color: var(--text);
-  }
-  .row-sponsor .layer-label .layer-name { color: #3a6a9a; }
-  .row-sponsor .layer-label .layer-num { color: var(--lane-b); }
-
-  /* ─ Layer 1: Substrate ─ */
-  .row-substrate {
-    background: linear-gradient(135deg, #002233 0%, #003344 100%);
-  }
-  .row-substrate .layer-label {
-    background: rgba(255,255,255,0.04);
-    color: white;
-  }
-  .row-substrate .layer-label::after { background: rgba(255,255,255,0.12); }
-  .row-substrate .layer-label .layer-sub { color: rgba(255,255,255,0.6); }
-  .row-substrate .layer-content { background: transparent; }
-
-  /* Card clusters within layers */
-  .card-cluster {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: flex-start;
+  .arrow-head {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid var(--teal);
+    position: relative;
+    z-index: 1;
+    margin-top: 14px;
   }
 
-  .cluster-group {
+  /* ── Lane cards ── */
+  .lanes-wrap {
+    padding: 22px;
     display: flex;
     flex-direction: column;
-    gap: 0;
-    flex-shrink: 0;
-  }
-  .cluster-group-label {
-    font-size: 9.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 0 0 5px;
-    border-bottom: 2px solid currentColor;
-    margin-bottom: 8px;
-  }
-  .cluster-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
+    gap: 16px;
   }
 
-  .arch-card {
-    padding: 9px 12px;
-    border-radius: 7px;
-    font-size: 11.5px;
-    font-weight: 500;
-    line-height: 1.3;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 110px;
-  }
-  .arch-card-label {
-    font-size: 9.5px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    opacity: 0.65;
-  }
-  .arch-card-name { font-weight: 600; }
-  .arch-card-sub { font-size: 10px; opacity: 0.7; }
-
-  /* Provider cards (Lane A/B/C) */
-  .provider-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    width: 100%;
-  }
-  .provider-col {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    padding: 12px;
+  .lane-card {
     border-radius: 8px;
-    border: 1.5px dashed var(--border);
+    overflow: hidden;
+    border: 1px solid var(--grey-200);
   }
-  .provider-col-header {
+
+  .lane-header {
+    padding: 12px 18px;
     display: flex;
     align-items: center;
-    gap: 7px;
-    margin-bottom: 4px;
+    gap: 10px;
   }
-  .provider-col-dot {
-    width: 9px;
-    height: 9px;
+  .lane-a .lane-header { background: var(--teal-light); border-bottom: 2px solid var(--teal); }
+  .lane-b .lane-header { background: var(--orange-light); border-bottom: 2px solid var(--orange); }
+
+  .lane-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .lane-a .lane-label { color: var(--teal); }
+  .lane-b .lane-label { color: var(--orange); }
+
+  .lane-dot {
+    width: 8px; height: 8px;
     border-radius: 50%;
     flex-shrink: 0;
   }
-  .provider-col-title {
-    font-size: 11.5px;
-    font-weight: 700;
-  }
-  .provider-col-subtitle {
-    font-size: 10px;
-    color: var(--muted);
-    margin-bottom: 6px;
+  .lane-a .lane-dot { background: var(--teal); }
+  .lane-b .lane-dot { background: var(--orange); }
+
+  .lane-body {
+    padding: 14px 18px 16px;
+    background: var(--white);
   }
 
-  .provider-app {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 10px;
-    border-radius: 6px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    font-size: 11px;
-  }
-  .provider-app-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    flex-shrink: 0;
-    font-weight: 700;
-  }
-  .provider-app-info {}
-  .provider-app-name { font-weight: 600; color: var(--text); display: block; }
-  .provider-app-vendor { font-size: 9.5px; color: var(--muted); display: block; }
-
-  /* Sponsor layer split */
-  .sponsor-split {
-    display: grid;
-    grid-template-columns: 1fr 1px 1fr;
-    gap: 0;
-    width: 100%;
-  }
-  .sponsor-panel { padding: 0 16px; }
-  .sponsor-panel:first-child { padding-left: 0; }
-  .sponsor-divider {
-    width: 1px;
-    background: var(--border);
-    margin: 0 8px;
-  }
-  .sponsor-panel-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .sponsor-panel-icon {
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .lane-desc {
     font-size: 13px;
-    flex-shrink: 0;
+    color: var(--text-mid);
+    line-height: 1.5;
+    margin-bottom: 10px;
   }
-  .sponsor-panel-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #3a6a9a;
+  .lane-desc strong {
+    color: var(--text);
+    font-weight: 600;
   }
-  .sponsor-panel-subtitle {
-    font-size: 10.5px;
-    color: var(--muted);
-  }
-  .sponsor-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-  .sponsor-card {
-    padding: 7px 11px;
-    border-radius: 6px;
-    background: white;
-    border: 1px solid var(--border);
+
+  .lane-flow {
     font-size: 11px;
-  }
-  .sponsor-card-name { font-weight: 600; color: var(--text); display: block; }
-  .sponsor-card-sub { font-size: 10px; color: var(--muted); display: block; }
-  .sponsor-card.keep-card {
-    border-left: 3px solid #3a6a9a;
-    background: #f5f8fc;
-  }
-  .sponsor-card.open-card {
-    border-left: 3px solid #aaa;
-    background: #fafafa;
-  }
-
-  /* Substrate row */
-  .substrate-cards {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .substrate-card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 8px;
-    padding: 12px 16px;
-    color: white;
-    flex: 1;
-    min-width: 130px;
-  }
-  .substrate-card-icon { font-size: 18px; margin-bottom: 6px; display: block; }
-  .substrate-card-name {
-    font-size: 12px;
-    font-weight: 700;
-    color: white;
-    display: block;
-    margin-bottom: 2px;
-  }
-  .substrate-card-sub {
-    font-size: 10.5px;
-    color: rgba(255,255,255,0.55);
-    display: block;
-    line-height: 1.4;
-  }
-  .moat-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(0,153,153,0.25);
-    color: var(--teal);
-    font-size: 9.5px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 3px;
-    margin-top: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  /* ── LEGEND / KEY ── */
-  .legend {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-  }
-  .legend-title {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-  .legend-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  .legend-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .legend-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
-  }
-  .legend-text {}
-  .legend-item-title { font-size: 12px; font-weight: 600; color: var(--text); display: block; margin-bottom: 2px; }
-  .legend-item-desc { font-size: 10.5px; color: var(--muted); line-height: 1.4; display: block; }
-
-  /* ── THESIS BAR ── */
-  .thesis-bar {
-    background: linear-gradient(135deg, var(--navy) 0%, #005566 100%);
-    border-radius: 10px;
-    padding: 20px 28px;
-    color: white;
+    font-family: 'DM Mono', monospace;
+    color: var(--grey-600);
+    line-height: 1.7;
+    padding: 10px 12px;
+    background: var(--grey-100);
+    border-radius: 5px;
     margin-top: 8px;
   }
-  .thesis-bar p {
-    font-size: 13px;
-    line-height: 1.7;
-    color: rgba(255,255,255,0.85);
-    max-width: 900px;
+
+  .lane-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
   }
-  .thesis-bar strong { color: var(--orange); }
+  .lane-pill {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+  .lane-a .lane-pill { background: var(--teal-light); color: var(--teal); }
+  .lane-b .lane-pill { background: var(--orange-light); color: var(--orange); }
+
+  .lane-apps {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .app-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-mid);
+  }
+  .app-chip {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 3px;
+    min-width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .chip-ai  { background: #E8F0FF; color: #3355BB; }
+  .chip-mr  { background: #E8F4F4; color: var(--teal); }
+  .chip-3p  { background: #FFF0E8; color: var(--orange); }
+  .chip-ct  { background: #F0EEF8; color: #6655AA; }
+
+  .app-name { font-weight: 600; color: var(--text); }
+  .app-sub  { color: var(--grey-400); font-size: 11px; }
+
+  /* ── Key insight bar ── */
+  .insight-bar {
+    margin-top: 28px;
+    background: var(--insight-bg);
+    border: 1.5px solid var(--orange-mid);
+    border-left: 5px solid var(--orange);
+    border-radius: 8px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .insight-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .insight-text h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 5px;
+  }
+  .insight-text p {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+
+  /* ── Cannibalization callout ── */
+  .cannibal-bar {
+    margin-top: 16px;
+    background: #FFF8F0;
+    border: 1.5px solid var(--orange-mid);
+    border-left: 5px solid var(--orange);
+    border-radius: 8px;
+    padding: 16px 22px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .cannibal-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .cannibal-text strong {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--orange);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .cannibal-text p {
+    font-size: 12.5px;
+    color: var(--text-mid);
+    line-height: 1.55;
+  }
+
+  /* ── Support note ── */
+  .support-note {
+    margin-top: 16px;
+    padding: 14px 20px;
+    background: var(--grey-100);
+    border-radius: 8px;
+    border: 1px solid var(--grey-200);
+    font-size: 12.5px;
+    color: var(--text-mid);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ── How to read ── */
+  .how-to-read {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .read-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--grey-200);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .read-icon { font-size: 20px; flex-shrink: 0; }
+  .read-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .read-desc {
+    font-size: 11.5px;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 860px) {
+    .framework-grid { grid-template-columns: 1fr; }
+    .how-to-read { grid-template-columns: 1fr 1fr; }
+  }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
-  <a href="index.html" class="back-link">← Back to overview</a>
-  <div class="brand">Siemens Healthineers <span class="brand-sub">— Platform Strategy Research</span></div>
-  <div class="page-title">Governance & Platform Architecture</div>
+  <a href="index.html">← Back to overview</a>
+  <span class="topbar-brand">Siemens Healthineers — Platform Strategy Research</span>
 </div>
 
-<div class="page-wrap">
+<div class="page-header">
+  <h1>Platform layer separation with governance</h1>
+  <p>A unified view of how Siemens resolves its cannibalization fear — two structural layers define what Siemens owns forever and what it fully opens to partners. The two-lane governance model controls which partners can access which layer, and under what terms.</p>
+  <div class="badge-row">
+    <span class="badge">Diagram</span>
+    <span class="badge">Combined framework</span>
+    <span class="badge">2 Layers · 2 Lanes</span>
+  </div>
+</div>
 
-  <!-- INTRO -->
-  <div class="intro">
-    <div class="diagram-label">Diagram · Combined framework</div>
-    <h1>Platform layer separation with governance</h1>
-    <p>A unified view of how Siemens resolves its cannibalization fear — three structural layers define what Siemens owns forever, what it keeps selectively, and what it fully opens to partners. The three-lane governance model controls which partners can access which layer, and under what terms.</p>
+<div class="main">
+
+  <!-- How to read -->
+  <div class="how-to-read">
+    <div class="read-card">
+      <span class="read-icon">🔒</span>
+      <div>
+        <div class="read-label">Layer 1 — Sponsor</div>
+        <div class="read-desc">Siemens owns forever. Scanner hardware, Fleet data, Teamplay platform. The non-negotiable moat.</div>
+      </div>
+    </div>
+    <div class="read-card">
+      <span class="read-icon">🏪</span>
+      <div>
+        <div class="read-label">Layer 2 — Provider</div>
+        <div class="read-desc">Fully open to partners. Siemens governs but does not build. Clinical AI, reporting, specialty apps.</div>
+      </div>
+    </div>
+    <div class="read-card">
+      <span class="read-icon">🏛️</span>
+      <div>
+        <div class="read-label">Lane A — Core</div>
+        <div class="read-desc">Siemens-built paid add-ons. Highest governance. Protected upsell. ex. Syngo Apps.</div>
+      </div>
+    </div>
+    <div class="read-card">
+      <span class="read-icon">🤝</span>
+      <div>
+        <div class="read-label">Lane B — Complementary</div>
+        <div class="read-desc">Co-promoted partners. Siemens co-markets, owns all support interactions, shares SLA accountability.</div>
+      </div>
+    </div>
   </div>
 
-  <!-- LEGEND -->
-  <div class="legend">
-    <div class="legend-title">How to read this diagram</div>
-    <div class="legend-grid">
-      <div class="legend-item">
-        <div class="legend-icon" style="background:rgba(0,61,77,0.08);">🔒</div>
-        <div class="legend-text">
-          <span class="legend-item-title">Layer 1 — Substrate</span>
-          <span class="legend-item-desc">Siemens owns forever. Hardware, fleet data, auth, connectivity. The moat. No partner access.</span>
-        </div>
+  <!-- Framework grid -->
+  <div class="framework-grid">
+
+    <!-- LEFT: Layers -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Platform Layer Separation</h2>
       </div>
-      <div class="legend-item">
-        <div class="legend-icon" style="background:rgba(91,141,184,0.1);">⚖️</div>
-        <div class="legend-text">
-          <span class="legend-item-title">Layer 2 — Sponsor</span>
-          <span class="legend-item-desc">Siemens keeps what's scanner-native. Opens what 3rd parties do better. Selective.</span>
+      <div class="layers-wrap">
+
+        <div class="layer-block">
+          <div class="layer-inner">
+            <div class="layer-tag">Layer 1</div>
+            <div class="layer-title">Sponsor</div>
+            <div class="layer-sub">Own forever · Non-negotiable moat</div>
+            <div class="layer-items">
+              <span class="layer-item">Scanner Hardware</span>
+              <span class="layer-item">Fleet data</span>
+              <span class="layer-item">Teamplay platform</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="legend-item">
-        <div class="legend-icon" style="background:rgba(0,153,153,0.08);">🏪</div>
-        <div class="legend-text">
-          <span class="legend-item-title">Layer 3 — Provider</span>
-          <span class="legend-item-desc">Fully open to partners. Siemens governs but does not build. Clinical AI, apps, reporting.</span>
+
+        <div class="layer-arrow">
+          <div class="arrow-head"></div>
         </div>
-      </div>
-      <div class="legend-item">
-        <div class="legend-icon" style="background:rgba(0,61,77,0.95);">🏛️</div>
-        <div class="legend-text">
-          <span class="legend-item-title">Governance layer</span>
-          <span class="legend-item-desc">Sits above all providers. Lane A/B/C classification, SLA standards, cert, billing, ROI.</span>
+
+        <div class="layer-block">
+          <div class="layer-inner">
+            <div class="layer-tag">Layer 2</div>
+            <div class="layer-title">Provider</div>
+            <div class="layer-sub">Fully open · Siemens governs, does not build</div>
+            <div class="layer-items">
+              <span class="layer-item">Clinical AI</span>
+              <span class="layer-item">AI reporting</span>
+              <span class="layer-item">Specialty apps</span>
+            </div>
+          </div>
         </div>
+
+        <!-- Cannibalization callout -->
+        <div class="cannibal-bar" style="margin-top:20px;">
+          <span class="cannibal-icon">⚠️</span>
+          <div class="cannibal-text">
+            <strong>Protecting syngo add-on revenue delays the network effect.</strong>
+            <p>Platform value compounds — upsell revenue does not. Opening Layer 2 to third parties doesn't mean losing control. Siemens owns the support layer, which means they own the data on what breaks, what hospitals need, and what developers should build next.</p>
+          </div>
+        </div>
+
       </div>
+    </div>
+
+    <!-- RIGHT: Lanes -->
+    <div class="panel">
+      <div class="panel-header">
+        <h2>Siemens Level of Involvement per App Category</h2>
+      </div>
+      <div class="lanes-wrap">
+
+        <!-- Lane A -->
+        <div class="lane-card lane-a">
+          <div class="lane-header">
+            <div class="lane-dot"></div>
+            <span class="lane-label">Lane A — Core</span>
+          </div>
+          <div class="lane-body">
+            <div class="lane-desc">
+              <strong>Siemens-built paid add-ons</strong> · Highest governance · Protected upsell
+            </div>
+            <div class="lane-pills">
+              <span class="lane-pill">Guaranteed SLA + uptime</span>
+              <span class="lane-pill">Scanner-native integration</span>
+              <span class="lane-pill">Direct billing via Teamplay</span>
+              <span class="lane-pill">Immediate Fleet deployment</span>
+            </div>
+            <div class="lane-apps">
+              <div class="app-row">
+                <span class="app-chip chip-ai">AI</span>
+                <div><span class="app-name">Chest AI</span> <span class="app-sub">· Critical findings · CT</span></div>
+              </div>
+              <div class="app-row">
+                <span class="app-chip chip-mr">MR</span>
+                <div><span class="app-name">Dose Protocol Manager</span> <span class="app-sub">· Fleet-wide · CT/MR</span></div>
+              </div>
+              <div class="app-row" style="color:var(--grey-400); font-size:11.5px; padding-left:4px;">
+                + 16 more Syngo apps · Siemens native
+              </div>
+            </div>
+            <div class="lane-flow">Fleet catalog → Value fit → Tech + reg → 1-click install → PACS integrate → Shared SLA → ROI</div>
+          </div>
+        </div>
+
+        <!-- Lane B -->
+        <div class="lane-card lane-b">
+          <div class="lane-header">
+            <div class="lane-dot"></div>
+            <span class="lane-label">Lane B — Complementary</span>
+          </div>
+          <div class="lane-body">
+            <div class="lane-desc">
+              <strong>Co-promoted</strong> · Siemens co-markets, <strong>owns all support interactions</strong>, shares SLA accountability with partner
+            </div>
+            <div class="lane-pills">
+              <span class="lane-pill">Joint SLA standard</span>
+              <span class="lane-pill">Fleet recommendation engine</span>
+              <span class="lane-pill">Shared revenue + data access</span>
+              <span class="lane-pill">Siemens-owned support layer</span>
+            </div>
+            <div class="lane-apps">
+              <div class="app-row">
+                <span class="app-chip chip-3p">3P</span>
+                <div><span class="app-name">Workflow.AI</span> <span class="app-sub">· Nines · Radiology triage</span></div>
+              </div>
+              <div class="app-row">
+                <span class="app-chip chip-3p">3P</span>
+                <div><span class="app-name">PowerScribe</span> <span class="app-sub">· Nuance · AI reporting</span></div>
+              </div>
+              <div class="app-row" style="color:var(--grey-400); font-size:11.5px; padding-left:4px;">
+                + 29 more apps · Co-promoted partners
+              </div>
+            </div>
+            <div class="lane-flow">Partner apps → Partner fit → Open API → Managed cloud → Standard layer → Tier 1+2 → Co-sell</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Key insight -->
+  <div class="insight-bar">
+    <span class="insight-icon">💡</span>
+    <div class="insight-text">
+      <h3>Key Insight</h3>
+      <p><strong>Owning support is not a service cost — it is Siemens' data acquisition strategy.</strong> Every support interaction across Lane A and Lane B surfaces what hospitals need, what breaks, and what developers should build next. This is how governance compounds into platform intelligence over time.</p>
     </div>
   </div>
 
-  <!-- MAIN DIAGRAM -->
-  <div class="diagram">
-
-    <!-- GOVERNANCE LAYER (TOP) -->
-    <div class="layer-row row-governance">
-      <div class="layer-label">
-        <div class="layer-num">Governance</div>
-        <div class="layer-name" style="color:white;">Lane Classification</div>
-        <div class="layer-sub">Siemens controls partner access, certification, SLA, and billing at this layer — for all providers.</div>
-        <span class="layer-badge" style="background:rgba(0,153,153,0.3); color:#7edddd;">Siemens-owned</span>
-      </div>
-      <div class="layer-content" style="background:transparent; padding: 16px 0 0;">
-        <div style="display:flex; gap:0; width:100%; padding: 0 24px;">
-
-          <!-- Lane A -->
-          <div class="gov-lane-col">
-            <div class="gov-lane-header">
-              <div class="gov-lane-dot dot-a"></div>
-              <span class="gov-lane-title">Lane A — Siemens native</span>
-            </div>
-            <div class="gov-lane-subtitle">Built by Siemens · full SLA ownership</div>
-            <div class="gov-items">
-              <div class="gov-item">Guaranteed SLA + uptime</div>
-              <div class="gov-item">Scanner-native integration</div>
-              <div class="gov-item">Immediate Fleet deployment</div>
-              <div class="gov-item">Direct billing via teamplay</div>
-            </div>
-          </div>
-
-          <!-- Lane B -->
-          <div class="gov-lane-col">
-            <div class="gov-lane-header">
-              <div class="gov-lane-dot dot-b"></div>
-              <span class="gov-lane-title">Lane B — Co-promoted partners</span>
-            </div>
-            <div class="gov-lane-subtitle">Vetted 3P · joint SLA · Fleet-surfaced</div>
-            <div class="gov-items">
-              <div class="gov-item">Siemens co-sells + supports</div>
-              <div class="gov-item">Joint SLA standard</div>
-              <div class="gov-item">Fleet recommendation engine</div>
-              <div class="gov-item">Shared revenue + data access</div>
-            </div>
-          </div>
-
-          <!-- Lane C -->
-          <div class="gov-lane-col">
-            <div class="gov-lane-header">
-              <div class="gov-lane-dot dot-c"></div>
-              <span class="gov-lane-title">Lane C — Vendor-led</span>
-            </div>
-            <div class="gov-lane-subtitle">Certified but self-managed · vendor SLA</div>
-            <div class="gov-items">
-              <div class="gov-item">Passes Siemens certification</div>
-              <div class="gov-item">Vendor owns SLA + support</div>
-              <div class="gov-item">Listed in marketplace</div>
-              <div class="gov-item">No Fleet surfacing by default</div>
-            </div>
-          </div>
-
-        </div>
-        <!-- Down arrows -->
-        <div class="gov-arrows">
-          <div class="gov-arrow">↓</div>
-          <div class="gov-arrow">↓</div>
-          <div class="gov-arrow">↓</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROVIDER LAYER (Layer 3) -->
-    <div class="layer-row row-provider">
-      <div class="layer-label">
-        <div class="layer-num">Layer 3</div>
-        <div class="layer-name">Provider layer</div>
-        <div class="layer-sub" style="color:var(--muted);">Fully open. Siemens governs, does not build. The real opportunity.</div>
-        <span class="layer-badge" style="background:rgba(0,153,153,0.1); color:var(--teal);">Fully open</span>
-      </div>
-      <div class="layer-content">
-        <div class="provider-grid">
-
-          <!-- Lane A column -->
-          <div class="provider-col" style="border-color: rgba(0,153,153,0.25); background:rgba(0,153,153,0.03);">
-            <div class="provider-col-header">
-              <div class="provider-col-dot" style="background:var(--teal);"></div>
-              <span class="provider-col-title" style="color:var(--teal-dark);">Lane A apps</span>
-            </div>
-            <div class="provider-col-subtitle">Siemens-built · guaranteed</div>
-            <div class="provider-app">
-              <div class="provider-app-icon" style="background:#e8f5f5; color:var(--teal);">AI</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name">Chest AI</span>
-                <span class="provider-app-vendor">Critical findings · CT</span>
-              </div>
-            </div>
-            <div class="provider-app">
-              <div class="provider-app-icon" style="background:#e8f5f5; color:var(--teal);">MR</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name">Dose Protocol Mgr</span>
-                <span class="provider-app-vendor">Fleet-wide · CT</span>
-              </div>
-            </div>
-            <div class="provider-app" style="color:var(--muted); border-style:dashed;">
-              <div class="provider-app-icon" style="background:#f0f0f0; color:#aaa;">+</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name" style="color:var(--muted);">16 more apps</span>
-                <span class="provider-app-vendor">Siemens native</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Lane B column -->
-          <div class="provider-col" style="border-color: rgba(91,141,184,0.25); background:rgba(91,141,184,0.03);">
-            <div class="provider-col-header">
-              <div class="provider-col-dot" style="background:var(--lane-b);"></div>
-              <span class="provider-col-title" style="color:#3a6a9a;">Lane B apps</span>
-            </div>
-            <div class="provider-col-subtitle">Co-promoted · joint SLA</div>
-            <div class="provider-app">
-              <div class="provider-app-icon" style="background:#eef2f8; color:#5b8db8;">3P</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name">Workflow.AI</span>
-                <span class="provider-app-vendor">Nines · radiology triage</span>
-              </div>
-            </div>
-            <div class="provider-app">
-              <div class="provider-app-icon" style="background:#eef2f8; color:#5b8db8;">📝</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name">PowerScribe</span>
-                <span class="provider-app-vendor">Nuance · AI reporting</span>
-              </div>
-            </div>
-            <div class="provider-app" style="color:var(--muted); border-style:dashed;">
-              <div class="provider-app-icon" style="background:#f0f0f0; color:#aaa;">+</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name" style="color:var(--muted);">29 more apps</span>
-                <span class="provider-app-vendor">Co-promoted</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Lane C column -->
-          <div class="provider-col" style="border-color: rgba(138,138,138,0.2); background:rgba(138,138,138,0.02);">
-            <div class="provider-col-header">
-              <div class="provider-col-dot" style="background:#aaa;"></div>
-              <span class="provider-col-title" style="color:#555;">Lane C apps</span>
-            </div>
-            <div class="provider-col-subtitle">Vendor-led · certified only</div>
-            <div class="provider-app">
-              <div class="provider-app-icon" style="background:#f4f4f4; color:#8a8a8a;">3P</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name">Quantib Prostate</span>
-                <span class="provider-app-vendor">Quantib · MRI AI</span>
-              </div>
-            </div>
-            <div class="provider-app">
-              <div class="provider-app-icon" style="background:#f4f4f4; color:#8a8a8a;">CT</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name">Aidoc PE</span>
-                <span class="provider-app-vendor">Aidoc · critical care</span>
-              </div>
-            </div>
-            <div class="provider-app" style="color:var(--muted); border-style:dashed;">
-              <div class="provider-app-icon" style="background:#f0f0f0; color:#aaa;">+</div>
-              <div class="provider-app-info">
-                <span class="provider-app-name" style="color:var(--muted);">21 more apps</span>
-                <span class="provider-app-vendor">Vendor-led</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- ↑↓ Transition note -->
-    <div style="display:flex; align-items:center; background:#f0f5f5; border-bottom:1px solid var(--border); border-top:1px solid var(--border); padding: 8px 24px; gap:16px;">
-      <span style="font-size:10.5px; color:var(--teal-dark); font-weight:600; text-transform:uppercase; letter-spacing:0.07em;">⚠ Cannibalization fear lives here</span>
-      <span style="font-size:11px; color:var(--muted); flex:1;">Siemens is most conflicted about which sponsor-layer capabilities to keep vs. open. The answer: keep what requires scanner access; open what commodity tools do faster.</span>
-    </div>
-
-    <!-- SPONSOR LAYER (Layer 2) -->
-    <div class="layer-row row-sponsor">
-      <div class="layer-label">
-        <div class="layer-num">Layer 2</div>
-        <div class="layer-name">Sponsor layer</div>
-        <div class="layer-sub" style="color:var(--muted);">Keep scanner-native capabilities. Open commodity syngo to 3rd parties.</div>
-        <span class="layer-badge" style="background:rgba(91,141,184,0.12); color:#3a6a9a;">Selective keep/open</span>
-      </div>
-      <div class="layer-content">
-        <div class="sponsor-split">
-
-          <!-- Keep panel -->
-          <div class="sponsor-panel">
-            <div class="sponsor-panel-header">
-              <div class="sponsor-panel-icon" style="background:rgba(91,141,184,0.1);">🔐</div>
-              <div>
-                <div class="sponsor-panel-title">Keep — scanner-native syngo</div>
-                <div class="sponsor-panel-subtitle">Requires scanner access. Siemens' true differentiation.</div>
-              </div>
-            </div>
-            <div class="sponsor-cards">
-              <div class="sponsor-card keep-card">
-                <span class="sponsor-card-name">Dose management</span>
-                <span class="sponsor-card-sub">Protocol access · scanner-linked</span>
-              </div>
-              <div class="sponsor-card keep-card">
-                <span class="sponsor-card-name">Fleet analytics</span>
-                <span class="sponsor-card-sub">Uptime · utilization data</span>
-              </div>
-              <div class="sponsor-card keep-card">
-                <span class="sponsor-card-name">Scanner-native AI</span>
-                <span class="sponsor-card-sub">Inline inference at acquisition</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="sponsor-divider"></div>
-
-          <!-- Open panel -->
-          <div class="sponsor-panel">
-            <div class="sponsor-panel-header">
-              <div class="sponsor-panel-icon" style="background:rgba(138,138,138,0.1);">🔓</div>
-              <div>
-                <div class="sponsor-panel-title">Open / outsource — commodity syngo</div>
-                <div class="sponsor-panel-subtitle">3rd parties do this faster and better. Don't compete.</div>
-              </div>
-            </div>
-            <div class="sponsor-cards">
-              <div class="sponsor-card open-card">
-                <span class="sponsor-card-name">Post-processing</span>
-                <span class="sponsor-card-sub">Recon · denoise · rendering</span>
-              </div>
-              <div class="sponsor-card open-card">
-                <span class="sponsor-card-name">Reporting</span>
-                <span class="sponsor-card-sub">Structured output · impressions</span>
-              </div>
-              <div class="sponsor-card open-card">
-                <span class="sponsor-card-name">Worklist</span>
-                <span class="sponsor-card-sub">Triage · routing · prioritization</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- SUBSTRATE LAYER (Layer 1) -->
-    <div class="layer-row row-substrate">
-      <div class="layer-label">
-        <div class="layer-num" style="color:rgba(255,255,255,0.5);">Layer 1</div>
-        <div class="layer-name" style="color:white;">Substrate</div>
-        <div class="layer-sub">Own forever. Non-negotiable. The durable moat that makes everything else possible.</div>
-        <span class="layer-badge" style="background:rgba(0,153,153,0.25); color:#7edddd;">Non-negotiable</span>
-      </div>
-      <div class="layer-content">
-        <div class="substrate-cards">
-          <div class="substrate-card">
-            <span class="substrate-card-icon">🏥</span>
-            <span class="substrate-card-name">Scanner hardware</span>
-            <span class="substrate-card-sub">MAGNETOM · SOMATOM · Biograph. 38,000+ installed globally.</span>
-            <span class="moat-label">Moat</span>
-          </div>
-          <div class="substrate-card">
-            <span class="substrate-card-icon">📡</span>
-            <span class="substrate-card-name">Fleet data layer</span>
-            <span class="substrate-card-sub">Utilization · uptime · cross-hospital coordination. No one else has this.</span>
-            <span class="moat-label">Moat</span>
-          </div>
-          <div class="substrate-card">
-            <span class="substrate-card-icon">⚙️</span>
-            <span class="substrate-card-name">teamplay platform</span>
-            <span class="substrate-card-sub">Auth · billing · API gateway · app lifecycle management.</span>
-          </div>
-          <div class="substrate-card">
-            <span class="substrate-card-icon">🔗</span>
-            <span class="substrate-card-name">Connectivity</span>
-            <span class="substrate-card-sub">DICOM · PACS · HL7 · FHIR. The pipe every app needs.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /diagram -->
-
-  <!-- THESIS BAR -->
-  <div class="thesis-bar">
-    <p>The cannibalization fear is real but <strong>misdirected</strong>. Siemens is protecting Layer 2 syngo capabilities that third parties will build faster and better regardless. The actual moat is the substrate — 38,000+ installed scanners generating fleet data no competitor can replicate. <strong>Opening the provider layer creates network effects. Protecting the substrate creates lock-in. Both compound each other.</strong></p>
+  <!-- Support note -->
+  <div class="support-note">
+    All support interactions are facilitated through Siemens — maintaining visibility into post-purchase behavior and enabling continuous marketplace improvement.
   </div>
 
-</div><!-- /page-wrap -->
-
+</div>
 </body>
 </html>
