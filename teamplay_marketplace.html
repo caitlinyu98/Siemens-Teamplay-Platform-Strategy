@@ -94,7 +94,8 @@
     font-weight: 500;
   }
 
-  .layout { display: flex; min-height: calc(100vh - 52px); }
+  .layout { display: flex; min-height: calc(100vh - 52px); align-items: flex-start; }
+  .main { flex: 1; min-width: 0; padding: 28px 32px; overflow: visible; }
 
   /* ── SIDEBAR ── */
   .sidebar {
@@ -215,7 +216,7 @@
   }
 
   /* ── MAIN ── */
-  .main { flex: 1; padding: 28px 32px; min-width: 0; }
+  /* main defined above */
   .marketplace-header {
     display: flex;
     align-items: flex-start;
